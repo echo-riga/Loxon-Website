@@ -23,6 +23,7 @@ export type Client = {
   image_url: string | null
   description: string | null
   link: string | null
+  entity_type: 'membership' | 'partner'   // new field
   created_at: string
 }
 

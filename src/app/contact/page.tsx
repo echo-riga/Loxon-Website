@@ -36,7 +36,7 @@ alt="Contact Loxon Philippines"
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center px-6 max-w-4xl">
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-              Contact Uss
+              Contact Us
             </h1>
             <p className="text-gray-200 text-xl md:text-2xl leading-relaxed">
               Ready to start your next project? Reach out to our engineering team.
