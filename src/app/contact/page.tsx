@@ -1,0 +1,148 @@
+'use client'
+
+import { useState } from 'react'
+
+export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    console.log('Form submitted:', formData)
+    setSubmitStatus({ type: 'success', message: 'Thank you for reaching out. We will respond within 24 hours.' })
+    setFormData({ name: '', email: '', subject: '', message: '' })
+    setIsSubmitting(false)
+  }
+
+  return (
+    <>
+      {/* Hero with Cover Image */}
+      <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
+        <img
+         src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80"
+alt="Contact Loxon Philippines"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <div className="text-center px-6 max-w-4xl">
+            <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
+              Contact Us
+            </h1>
+            <p className="text-gray-200 text-xl md:text-2xl leading-relaxed">
+              Ready to start your next project? Reach out to our engineering team.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <section className="py-24 bg-white w-full">
+        <div className="w-full px-8 md:px-16 lg:px-32">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Contact Info */}
+            <div className="bg-gray-50 p-8">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-semibold text-gray-800">Office Address</h3>
+                  <p className="text-gray-600 mt-1">
+                    23rd Floor, One Corporate Centre, Meralco Ave, Pasig City, Philippines
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Phone</h3>
+                  <p className="text-gray-600 mt-1">
+                    +63 (2) 8123 4567<br />
+                    +63 (917) 123 4567
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Email</h3>
+                  <p className="text-gray-600 mt-1">
+                    info@loxon.ph<br />
+                    projects@loxon.ph
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Business Hours</h3>
+                  <p className="text-gray-600 mt-1">
+                    Monday – Friday: 8:00 AM – 6:00 PM<br />
+                    Saturday: 9:00 AM – 1:00 PM
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="bg-white border border-gray-200 p-8 shadow-sm">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">Send a Message</h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Message *</label>
+                  <textarea
+                    rows={5}
+                    required
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 rounded transition disabled:opacity-70"
+                >
+                  {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
+                </button>
+                {submitStatus && (
+                  <p className={`text-center text-sm ${submitStatus.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                    {submitStatus.message}
+                  </p>
+                )}
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
