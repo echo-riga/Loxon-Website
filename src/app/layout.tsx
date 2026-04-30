@@ -7,7 +7,6 @@ import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-
 export const metadata: Metadata = {
   metadataBase: new URL('https://loxon-ph.vercel.app'),
   title: 'Loxon Philippines Inc. | Engineering & Construction Excellence',
@@ -27,15 +26,21 @@ export const metadata: Metadata = {
     title: 'Loxon Philippines Inc. | Engineering & Construction',
     description: 'Premier engineering and construction company in the Philippines.',
   },
+  // ✅ Add this
+  icons: {
+    icon: '/loxon-logo.png',
+    apple: '/loxon-logo.png',
+  },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {/* ✅ Force favicon via link tag */}
+        <link rel="icon" href="/loxon-logo.png" type="image/png" />
+        <link rel="shortcut icon" href="/loxon-logo.png" type="image/png" />
+      </head>
       <body className="font-sans bg-white text-gray-900">
         <Navbar />
         <main className="min-h-screen">{children}</main>

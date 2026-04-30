@@ -29,7 +29,7 @@ export default function ContactPage() {
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
         <img
-         src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80"
+         src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.pngs"
 alt="Contact Loxon Philippines"
           className="w-full h-full object-cover"
         />

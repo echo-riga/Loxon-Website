@@ -69,9 +69,9 @@ export default async function HomePage() {
               <div className="text-gray-500 mt-2">Across the Philippines</div>
             </div>
             <div className="text-center py-12 bg-gray-50 hover:shadow-xl transition duration-300">
-              <div className="text-7xl font-bold text-sky-600 mb-4">25+</div>
+              <div className="text-7xl font-bold text-sky-600 mb-4">43+</div>
               <div className="text-2xl text-gray-800 font-semibold">Years of Excellence</div>
-              <div className="text-gray-500 mt-2">Since 1998</div>
+              <div className="text-gray-500 mt-2">Since 1983</div>
             </div>
           </div>
         </div>
