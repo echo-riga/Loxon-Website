@@ -31,7 +31,7 @@ export default async function HomePage() {
         <div className="relative z-10 w-full px-8 md:px-16 lg:px-32 animate-fade-in-up">
           <div className="max-w-5xl">
             <span className="text-sky-400 text-lg md:text-xl font-semibold tracking-wider mb-4 block">
-              ESTABLISHED 1998
+              ESTABLISHED 1983
             </span>
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-8 text-white leading-tight">
               Engineering the<br />
@@ -84,10 +84,10 @@ export default async function HomePage() {
             <div className="animate-fade-in-right">
               <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">About Loxon Philippines</span>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 leading-tight">
-                Building Excellence Since 1998
+                Building Excellence Since 1983
               </h2>
               <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                Loxon Philippines Inc. stands as a premier engineering and construction firm with over 25 years of excellence in delivering infrastructure, industrial, and commercial projects across the Philippine archipelago.
+                Loxon Philippines Inc. stands as a premier engineering and construction firm with over 43 years of excellence in delivering infrastructure, industrial, and commercial projects across the Philippine archipelago.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
                 Our commitment to quality, safety, and innovation has established us as a trusted partner for both government agencies and private sector clients.
