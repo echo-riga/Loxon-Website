@@ -35,6 +35,10 @@ export async function sendJobApplicationNotification(data: {
   cover_letter?: string
   resume_url?: string
 }) {
+  // Use CONTACT_EMAIL_TO as the primary, fallback to hardcoded
+  const recipient = process.env.CONTACT_EMAIL_TO || 'rigaecho@gmail.com'
+  console.log(`📧 Sending job application email to: ${recipient}`)
+
   const htmlContent = `
     <h2>New Job Application</h2>
     <p><strong>Position:</strong> ${data.job_title}</p>
@@ -47,8 +51,8 @@ export async function sendJobApplicationNotification(data: {
   `
 
   await resend.emails.send({
-    from: 'Loxon Philippines <onboarding@resend.dev>', // or your verified domain
-    to: [process.env.JOBS_EMAIL_TO || 'rigaecho@gmail.com'], // separate env var
+    from: 'Loxon Philippines <onboarding@resend.dev>',
+    to: [recipient],
     replyTo: data.email,
     subject: `Job Application: ${data.job_title} - ${data.full_name}`,
     text: `Position: ${data.job_title}\nName: ${data.full_name}\nEmail: ${data.email}\nPhone: ${data.phone || 'N/A'}\n\nCover Letter:\n${data.cover_letter || 'N/A'}\n\nResume URL: ${data.resume_url || 'N/A'}`,

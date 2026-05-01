@@ -5,17 +5,19 @@ import { sendJobApplicationNotification } from '@/lib/email'
 export async function POST(request: Request) {
   try {
     const { job_id, full_name, email, phone, cover_letter, resume_url } = await request.json()
+    console.log('📝 Received job application:', { job_id, full_name, email })
 
     if (!full_name || !email) {
       return NextResponse.json({ error: 'Name and email are required' }, { status: 400 })
     }
 
-    // Get job title for the email
+    // Get job title
     let jobTitle = 'Unknown Position'
     if (job_id) {
       const jobRes = await pool.query('SELECT title FROM jobs WHERE id = $1', [job_id])
       if (jobRes.rows[0]) jobTitle = jobRes.rows[0].title
     }
+    console.log(`📌 Job title resolved: ${jobTitle}`)
 
     // Insert into database
     const result = await pool.query(
@@ -23,9 +25,11 @@ export async function POST(request: Request) {
        VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
       [job_id || null, full_name, email, phone || null, cover_letter || null, resume_url || null]
     )
+    console.log(`✅ Job application saved with ID: ${result.rows[0].id}`)
 
-    // Send email notification (non-blocking – errors won't break the submission)
+    // Send email notification
     try {
+      console.log('📧 Sending email notification...')
       await sendJobApplicationNotification({
         job_title: jobTitle,
         full_name,
@@ -34,14 +38,15 @@ export async function POST(request: Request) {
         cover_letter,
         resume_url,
       })
+      console.log('📧 Email sent successfully')
     } catch (emailError) {
-      console.error('Failed to send job application email:', emailError)
-      // Don't fail the request – application is already saved
+      console.error('❌ Email sending failed:', emailError)
+      // Do not fail the request – application already saved
     }
 
     return NextResponse.json({ success: true, id: result.rows[0].id })
   } catch (error) {
-    console.error('Job application error:', error)
+    console.error('❌ Job application error:', error)
     return NextResponse.json({ error: 'Failed to submit application' }, { status: 500 })
   }
 }
