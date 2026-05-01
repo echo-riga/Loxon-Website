@@ -7,31 +7,41 @@ const ADMIN_API_BASE = 'https://loxon-admin.vercel.app'
 const FRONTEND_API_BASE = '' // relative URLs will use the same origin
 
 export async function getProjects() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/projects`)
+  const res = await fetch(`${ADMIN_API_BASE}/api/projects`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch projects')
   return res.json()
 }
 
 export async function getProductsServices() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/products-services`)
+  const res = await fetch(`${ADMIN_API_BASE}/api/products-services`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch products/services')
   return res.json()
 }
 
 export async function getClients() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/clients`)
+  const res = await fetch(`${ADMIN_API_BASE}/api/clients`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch clients')
   return res.json()
 }
 
 export async function getOurCompany() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/our-company`)
+  const res = await fetch(`${ADMIN_API_BASE}/api/our-company`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch company data')
   return res.json()
 }
 
 export async function getJobs() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/jobs`)
+  const res = await fetch(`${ADMIN_API_BASE}/api/jobs`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch jobs')
   return res.json()
 }
