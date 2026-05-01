@@ -17,7 +17,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-gray-400 leading-relaxed mb-4">
-              Premier engineering and construction company delivering excellence across the Philippines since 1998.
+              Premier engineering and construction company delivering excellence across the Philippines since 1983.
             </p>
             <p className="text-gray-400 text-sm">
               PCAB License No. 12345<br />
@@ -43,18 +43,17 @@ export default function Footer() {
             <h4 className="text-white font-semibold text-lg mb-4">Contact Us</h4>
             <ul className="space-y-3 text-gray-400">
               <li className="leading-relaxed">
-                23rd Floor, One Corporate Centre<br />
-                Meralco Avenue, Ortigas Center<br />
-                Pasig City, Metro Manila<br />
-                Philippines 1605
+                LPI Centre, 324 capt. Henry Javier St., Oranbo,<br />
+                Pasig City, NCR, Philippines 1600
               </li>
               <li>
-                Tel: +63 (2) 8123 4567<br />
-                Mobile: +63 (917) 123 4567
+                Tel: +63 (2) 8470-3912 to 15
               </li>
               <li>
-                Email: info@loxon.ph<br />
-                projects@loxon.ph
+                Email: lpie@loxon.com.ph
+              </li>
+              <li className="text-gray-500 text-sm pt-2">
+                Warehouse: Two LPI Centre, 3 Luis St. San Miguel, Pasig City
               </li>
             </ul>
           </div>
