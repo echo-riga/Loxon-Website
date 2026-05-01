@@ -1,52 +1,42 @@
 // lib/api.ts
 
-// Admin API (external) – GET only
+// Admin API (external) – GET only (no caching)
 const ADMIN_API_BASE = 'https://loxon-admin.vercel.app'
 
 // Frontend API (your own server) – POST endpoints
 const FRONTEND_API_BASE = '' // relative URLs will use the same origin
 
 export async function getProjects() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/projects`, {
-    next: { revalidate: 60 },
-  })
+  const res = await fetch(`${ADMIN_API_BASE}/api/projects`)
   if (!res.ok) throw new Error('Failed to fetch projects')
   return res.json()
 }
 
 export async function getProductsServices() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/products-services`, {
-    next: { revalidate: 60 },
-  })
+  const res = await fetch(`${ADMIN_API_BASE}/api/products-services`)
   if (!res.ok) throw new Error('Failed to fetch products/services')
   return res.json()
 }
 
 export async function getClients() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/clients`, {
-    next: { revalidate: 60 },
-  })
+  const res = await fetch(`${ADMIN_API_BASE}/api/clients`)
   if (!res.ok) throw new Error('Failed to fetch clients')
   return res.json()
 }
 
 export async function getOurCompany() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/our-company`, {
-    next: { revalidate: 60 },
-  })
+  const res = await fetch(`${ADMIN_API_BASE}/api/our-company`)
   if (!res.ok) throw new Error('Failed to fetch company data')
   return res.json()
 }
 
 export async function getJobs() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/jobs`, {
-    next: { revalidate: 60 },
-  })
+  const res = await fetch(`${ADMIN_API_BASE}/api/jobs`)
   if (!res.ok) throw new Error('Failed to fetch jobs')
   return res.json()
 }
 
-// ─── NEW: POST to your own frontend API ─────────────────────────────────────
+// ─── POST to your own frontend API ─────────────────────────────────────
 
 type ContactFormData = {
   name: string
