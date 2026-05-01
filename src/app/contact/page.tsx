@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { submitContactForm } from '@/lib/api'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -17,11 +18,15 @@ export default function ContactPage() {
     setIsSubmitting(true)
     setSubmitStatus(null)
 
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    console.log('Form submitted:', formData)
-    setSubmitStatus({ type: 'success', message: 'Thank you for reaching out. We will respond within 24 hours.' })
-    setFormData({ name: '', email: '', subject: '', message: '' })
-    setIsSubmitting(false)
+    try {
+      await submitContactForm(formData)
+      setSubmitStatus({ type: 'success', message: 'Thank you for reaching out. We will respond within 24 hours.' })
+      setFormData({ name: '', email: '', subject: '', message: '' })
+    } catch {
+      setSubmitStatus({ type: 'error', message: 'Something went wrong. Please try again.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -29,7 +34,7 @@ export default function ContactPage() {
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
         <img
-         src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.pngs"
+         src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.png"
 alt="Contact Loxon Philippines"
           className="w-full h-full object-cover"
         />
