@@ -93,8 +93,8 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div className="bg-white border border-gray-200 p-8 shadow-sm rounded-lg">
+            {/* Contact Form with Left Border Accent */}
+            <div className="bg-white border border-gray-200 border-l-8 border-l-sky-600 p-8 shadow-sm rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Send a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
