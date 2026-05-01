@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://loxon-ph.vercel.app'),
   title: 'Loxon Philippines Inc. | Engineering & Construction Excellence',
@@ -26,7 +27,6 @@ export const metadata: Metadata = {
     title: 'Loxon Philippines Inc. | Engineering & Construction',
     description: 'Premier engineering and construction company in the Philippines.',
   },
-  // ✅ Add this
   icons: {
     icon: '/loxon-logo.png',
     apple: '/loxon-logo.png',
@@ -34,12 +34,36 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // JSON‑LD structured data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "EngineeringCompany",
+    "name": "Loxon Philippines Inc.",
+    "url": "https://loxon-ph.vercel.app",
+    "logo": "https://loxon-ph.vercel.app/loxon-logo.png",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "23rd Floor, One Corporate Centre, Meralco Ave",
+      "addressLocality": "Pasig City",
+      "addressRegion": "Metro Manila",
+      "addressCountry": "PH"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+63281234567",
+      "contactType": "customer service"
+    }
+  }
+
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        {/* ✅ Force favicon via link tag */}
         <link rel="icon" href="/loxon-logo.png" type="image/png" />
         <link rel="shortcut icon" href="/loxon-logo.png" type="image/png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="font-sans bg-white text-gray-900">
         <Navbar />
