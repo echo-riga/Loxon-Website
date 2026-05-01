@@ -34,8 +34,8 @@ export default function ContactPage() {
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
         <img
-         src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.png"
-alt="Contact Loxon Philippines"
+          src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.png"
+          alt="Contact Loxon Philippines"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -54,41 +54,47 @@ alt="Contact Loxon Philippines"
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Contact Info */}
-            <div className="bg-gray-50 p-8">
+            <div className="bg-gray-50 p-8 rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold text-gray-800">Office Address</h3>
+                  <h3 className="font-semibold text-gray-800">Main Office</h3>
                   <p className="text-gray-600 mt-1">
-                    23rd Floor, One Corporate Centre, Meralco Ave, Pasig City, Philippines
+                    LPI Centre, 324 capt. Henry Javier St., Oranbo,<br />
+                    Pasig City, NCR, Philippines 1600
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800">Warehouse</h3>
+                  <p className="text-gray-600 mt-1">
+                    Two LPI Centre, 3 Luis St. San Miguel, Pasig City
                   </p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800">Phone</h3>
                   <p className="text-gray-600 mt-1">
-                    +63 (2) 8123 4567<br />
-                    +63 (917) 123 4567
+                    +63 (2) 8470-3912 to 15
                   </p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800">Email</h3>
                   <p className="text-gray-600 mt-1">
-                    info@loxon.ph<br />
-                    projects@loxon.ph
+                    lpie@loxon.com.ph
                   </p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800">Business Hours</h3>
                   <p className="text-gray-600 mt-1">
                     Monday – Friday: 8:00 AM – 6:00 PM<br />
-                    Saturday: 9:00 AM – 1:00 PM
+                    Saturday: 9:00 AM – 1:00 PM<br />
+                    Sunday: Closed
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white border border-gray-200 p-8 shadow-sm">
+            <div className="bg-white border border-gray-200 p-8 shadow-sm rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Send a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
