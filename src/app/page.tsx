@@ -1,98 +1,120 @@
 // app/page.tsx
-import Link from 'next/link'
-import { getProjects, getOurCompany, getClients } from '@/lib/api'
+import Link from "next/link";
+import { getProjects, getOurCompany, getClients } from "@/lib/api";
 
 export default async function HomePage() {
   const [projects, company, clients] = await Promise.all([
     getProjects(),
     getOurCompany(),
     getClients(),
-  ])
+  ]);
 
-  const featuredProjects = projects.slice(0, 3)
+  const featuredProjects = projects.slice(0, 3);
 
   return (
     <>
       {/* Hero Section - Full Width */}
-<section className="relative h-screen min-h-[700px] w-full flex items-center bg-gray-900 overflow-hidden">
-  {/* Background Image with Slow Zoom and better mobile positioning */}
-  <div className="absolute inset-0 w-full h-full">
-    <img 
-      src="https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
-      alt="Construction site"
-      className="w-full h-full object-cover object-center md:object-[center_30%] animate-slow-zoom"
-    />
-  </div>
-  
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60"></div>
-  
-  {/* Content - improved mobile spacing */}
-  <div className="relative z-10 w-full px-6 sm:px-8 md:px-16 lg:px-32 animate-fade-in-up">
-    <div className="max-w-5xl mx-auto md:mx-0">
-      <span className="text-sky-400 text-base sm:text-lg md:text-xl font-semibold tracking-wider mb-3 sm:mb-4 block">
-        ESTABLISHED 1983
-      </span>
-      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
-        Engineering the<br />
-        <span className="text-sky-400">Philippines' Future</span>
-      </h1>
-      <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 md:mb-10 max-w-3xl leading-relaxed">
-        Loxon Philippines Inc. delivers world-class engineering and construction solutions from infrastructure to industrial projects with unwavering quality and safety.
-      </p>
-      <div className="flex flex-wrap gap-4 sm:gap-6">
-        <Link href="/projects" className="bg-sky-600 hover:bg-sky-700 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
-          VIEW OUR WORK
-        </Link>
-        <Link href="/contact" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
-          REQUEST A QUOTE
-        </Link>
-      </div>
-    </div>
-  </div>
-  
-  {/* Scroll Indicator - hide on very small screens if needed */}
-  <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce-slow hidden sm:block">
-    <div className="w-8 h-14 border-2 border-white rounded-full flex justify-center">
-      <div className="w-1.5 h-3 bg-white rounded-full mt-3 animate-pulse-slow"></div>
-    </div>
-  </div>
-</section>
+      <section className="relative h-screen min-h-[700px] w-full flex items-center bg-gray-900 overflow-hidden">
+        {/* Background Image with Slow Zoom and better mobile positioning */}
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
+            alt="Construction site"
+            className="w-full h-full object-cover object-center md:object-[center_30%] animate-slow-zoom"
+          />
+        </div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60"></div>
+        {/* Content - improved mobile spacing */}
+        <div className="relative z-10 w-full px-6 sm:px-8 md:px-16 lg:px-32 animate-fade-in-up">
+          <div className="max-w-5xl mx-auto md:mx-0">
+            <span className="text-sky-400 text-base sm:text-lg md:text-xl font-semibold tracking-wider mb-3 sm:mb-4 block">
+              ESTABLISHED 1983
+            </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
+              Engineering the
+              <br />
+              <span className="text-sky-400">Philippines' Future</span>
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 md:mb-10 max-w-3xl leading-relaxed">
+              Loxon Philippines Inc. delivers world-class engineering and
+              construction solutions from infrastructure to industrial projects
+              with unwavering quality and safety.
+            </p>
+            <div className="flex flex-wrap gap-4 sm:gap-6">
+              <Link
+                href="/projects"
+                className="bg-sky-600 hover:bg-sky-700 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block"
+              >
+                VIEW OUR WORK
+              </Link>
+              <Link
+                href="/contact"
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block"
+              >
+                REQUEST A QUOTE
+              </Link>
+            </div>
+          </div>
+        </div>
+        {/* Scroll Indicator - hide on very small screens if needed */}
+        <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce-slow hidden sm:block">
+          <div className="w-8 h-14 border-2 border-white rounded-full flex justify-center">
+            <div className="w-1.5 h-3 bg-white rounded-full mt-3 animate-pulse-slow"></div>
+          </div>
+        </div>
+      </section>
 
       {/* Company Stats - Projects Completed & Years Only */}
       <section className="py-20 bg-white w-full border-b border-gray-200">
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
             <div className="text-center py-12 bg-gray-50 hover:shadow-xl transition duration-300">
-              <div className="text-7xl font-bold text-sky-600 mb-4">350+</div>
-              <div className="text-2xl text-gray-800 font-semibold">Projects Completed</div>
+              <div className="text-7xl font-bold text-sky-600 mb-4">
+                {projects.length}+
+              </div>
+              <div className="text-2xl text-gray-800 font-semibold">
+                Projects Completed
+              </div>
               <div className="text-gray-500 mt-2">Across the Philippines</div>
             </div>
             <div className="text-center py-12 bg-gray-50 hover:shadow-xl transition duration-300">
               <div className="text-7xl font-bold text-sky-600 mb-4">43+</div>
-              <div className="text-2xl text-gray-800 font-semibold">Years of Excellence</div>
+              <div className="text-2xl text-gray-800 font-semibold">
+                Years of Excellence
+              </div>
               <div className="text-gray-500 mt-2">Since 1983</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section (unchanged) */}
       <section className="py-24 md:py-32 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="animate-fade-in-right">
-              <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">About Loxon Philippines</span>
+              <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
+                About Loxon Philippines
+              </span>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 leading-tight">
                 Building Excellence Since 1983
               </h2>
               <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                Loxon Philippines Inc. stands as a premier engineering and construction firm with over 43 years of excellence in delivering infrastructure, industrial, and commercial projects across the Philippine archipelago.
+                Loxon Philippines Inc. stands as a premier engineering and
+                construction firm with over 43 years of excellence in delivering
+                infrastructure, industrial, and commercial projects across the
+                Philippine archipelago.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                Our commitment to quality, safety, and innovation has established us as a trusted partner for both government agencies and private sector clients.
+                Our commitment to quality, safety, and innovation has
+                established us as a trusted partner for both government agencies
+                and private sector clients.
               </p>
-              <Link href="/our-company" className="text-sky-600 font-semibold text-lg hover:text-sky-700 transition duration-300">
+              <Link
+                href="/our-company"
+                className="text-sky-600 font-semibold text-lg hover:text-sky-700 transition duration-300"
+              >
                 READ MORE
               </Link>
             </div>
@@ -112,156 +134,207 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Core Capabilities */}
+      {/* Core Capabilities (unchanged) */}
       <section className="py-24 md:py-32 bg-gray-50 w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="text-center max-w-4xl mx-auto mb-20 animate-fade-in-up">
-            <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">Our Expertise</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900">Core Capabilities</h2>
+            <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
+              Our Expertise
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900">
+              Core Capabilities
+            </h2>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Comprehensive engineering and construction services tailored to the Philippine landscape.
+              Comprehensive engineering and construction services tailored to
+              the Philippine landscape.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { title: 'Structural Engineering', desc: 'Robust structural design for commercial and industrial buildings with seismic considerations.' },
-              { title: 'Industrial Construction', desc: 'Full-scale industrial facilities and manufacturing plants built to international standards.' },
-              { title: 'Infrastructure Development', desc: 'Bridges, highways, and public infrastructure projects that connect communities.' },
-              { title: 'Project Management', desc: 'End-to-end construction management and supervision ensuring timely delivery.' },
+              {
+                title: "Structural Engineering",
+                desc: "Robust structural design for commercial and industrial buildings with seismic considerations.",
+              },
+              {
+                title: "Industrial Construction",
+                desc: "Full-scale industrial facilities and manufacturing plants built to international standards.",
+              },
+              {
+                title: "Infrastructure Development",
+                desc: "Bridges, highways, and public infrastructure projects that connect communities.",
+              },
+              {
+                title: "Project Management",
+                desc: "End-to-end construction management and supervision ensuring timely delivery.",
+              },
             ].map((service, idx) => (
-              <div key={idx} className="bg-white p-8 hover:shadow-xl transition duration-300 animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+              <div
+                key={idx}
+                className="bg-white p-8 hover:shadow-xl transition duration-300 animate-fade-in-up"
+                style={{ animationDelay: `${idx * 0.1}s` }}
+              >
                 <div className="w-16 h-1 bg-sky-600 mb-6"></div>
-                <h3 className="text-2xl font-bold mb-4 text-gray-900">{service.title}</h3>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">
+                  {service.title}
+                </h3>
                 <p className="text-gray-600 leading-relaxed">{service.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-{/* Featured Projects - Redesigned Corporate Style */}
-<section className="py-24 md:py-32 bg-white w-full">
-  <div className="w-full px-8 md:px-16 lg:px-32">
-    <div className="flex justify-between items-end mb-16 flex-wrap gap-4 border-b border-gray-200 pb-6">
-      <div>
-        <span className="text-sky-600 text-base font-semibold tracking-wider uppercase">Portfolio</span>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mt-2">Featured Projects</h2>
-        <p className="text-xl text-gray-600 mt-3 max-w-2xl">
-          Delivering engineering excellence across the Philippines.
-        </p>
-      </div>
-      <Link href="/projects" className="text-sky-600 font-semibold text-lg hover:text-sky-700 transition duration-300 inline-flex items-center group">
-        VIEW ALL PROJECTS
-        <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
-      </Link>
-    </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-      {featuredProjects.map((project: any, idx: number) => (
-        <div key={project.id} className="group">
-          {/* Image container with elegant overlay */}
-          <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
-            {project.image_url && (
-              <img
-                src={project.image_url}
-                alt={project.title}
-                className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
-              />
-            )}
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+      {/* Featured Projects (unchanged) */}
+      <section className="py-24 md:py-32 bg-white w-full">
+        <div className="w-full px-8 md:px-16 lg:px-32">
+          <div className="flex justify-between items-end mb-16 flex-wrap gap-4 border-b border-gray-200 pb-6">
+            <div>
+              <span className="text-sky-600 text-base font-semibold tracking-wider uppercase">
+                Portfolio
+              </span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mt-2">
+                Featured Projects
+              </h2>
+              <p className="text-xl text-gray-600 mt-3 max-w-2xl">
+                Delivering engineering excellence across the Philippines.
+              </p>
+            </div>
+            <Link
+              href="/projects"
+              className="text-sky-600 font-semibold text-lg hover:text-sky-700 transition duration-300 inline-flex items-center group"
+            >
+              VIEW ALL PROJECTS
+              <span className="ml-1 transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+            {featuredProjects.map((project: any, idx: number) => (
+              <div key={project.id} className="group">
+                <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
+                  {project.image_url && (
+                    <img
+                      src={project.image_url}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                </div>
+                <div className="mt-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition duration-300">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed line-clamp-3">
+                    {project.description}
+                  </p>
+                  {project.video_url && (
+                    <div className="mt-4">
+                      <a
+                        href={project.video_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sky-600 font-medium hover:underline inline-flex items-center gap-1 text-sm uppercase tracking-wide"
+                      >
+                        Watch Video
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          />
+                        </svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Content below image */}
-          <div className="mt-6">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition duration-300">
-              {project.title}
-            </h3>
-            <p className="text-gray-600 leading-relaxed line-clamp-3">
-              {project.description}
-            </p>
-            {project.video_url && (
-              <div className="mt-4">
-                <a
-                  href={project.video_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sky-600 font-medium hover:underline inline-flex items-center gap-1 text-sm uppercase tracking-wide"
+      {/* Partners Section (unchanged) */}
+      {clients.length > 0 && (
+        <section className="py-24 md:py-32 bg-gray-50 w-full">
+          <div className="w-full px-8 md:px-16 lg:px-32">
+            <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
+              <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
+                Trusted by Industry Leaders
+              </span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900">
+                Our Partners
+              </h2>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                We collaborate with the most respected names in engineering,
+                construction, and building technology.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12">
+              {clients.slice(0, 5).map((client: any, idx: number) => (
+                <div
+                  key={client.id}
+                  className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  style={{ animationDelay: `${idx * 0.05}s` }}
                 >
-                  Watch Video
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </a>
+                  <div className="h-28 w-full flex items-center justify-center mb-4 overflow-hidden">
+                    {client.image_url ? (
+                      <img
+                        src={client.image_url}
+                        alt={client.title}
+                        className="max-h-20 max-w-full object-contain transition duration-300 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="h-20 w-full flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-sky-50 transition">
+                        <span className="text-gray-500 group-hover:text-sky-600 font-semibold text-center px-2">
+                          {client.title}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-center text-gray-600 text-sm font-medium group-hover:text-sky-600 transition">
+                    {client.title}
+                  </p>
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></div>
+                </div>
+              ))}
+            </div>
+            {clients.length === 0 && (
+              <div className="text-center py-20">
+                <p className="text-gray-500 text-xl">
+                  Partner logos will appear here.
+                </p>
               </div>
             )}
           </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-{/* Partners Section - Full color, hover zoom */}
-{clients.length > 0 && (
-  <section className="py-24 md:py-32 bg-gray-50 w-full">
-    <div className="w-full px-8 md:px-16 lg:px-32">
-      <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
-        <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">Trusted by Industry Leaders</span>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900">Our Partners</h2>
-        <p className="text-xl text-gray-600 leading-relaxed">
-          We collaborate with the most respected names in engineering, construction, and building technology.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12">
-        {clients.slice(0, 5).map((client: any, idx: number) => (
-          <div
-            key={client.id}
-            className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            style={{ animationDelay: `${idx * 0.05}s` }}
-          >
-            <div className="h-28 w-full flex items-center justify-center mb-4 overflow-hidden">
-              {client.image_url ? (
-                <img
-                  src={client.image_url}
-                  alt={client.title}
-                  className="max-h-20 max-w-full object-contain transition duration-300 group-hover:scale-110"
-                />
-              ) : (
-                <div className="h-20 w-full flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-sky-50 transition">
-                  <span className="text-gray-500 group-hover:text-sky-600 font-semibold text-center px-2">
-                    {client.title}
-                  </span>
-                </div>
-              )}
-            </div>
-            <p className="text-center text-gray-600 text-sm font-medium group-hover:text-sky-600 transition">
-              {client.title}
-            </p>
-            <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></div>
-          </div>
-        ))}
-      </div>
-
-      {clients.length === 0 && (
-        <div className="text-center py-20">
-          <p className="text-gray-500 text-xl">Partner logos will appear here.</p>
-        </div>
+        </section>
       )}
-    </div>
-  </section>
-)}
-      {/* CTA Section */}
+
+      {/* CTA Section (unchanged) */}
       <section className="py-24 bg-sky-700 w-full">
         <div className="w-full px-8 md:px-16 lg:px-32 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Start Your Project?</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Ready to Start Your Project?
+          </h2>
           <p className="text-xl text-gray-100 mb-10 max-w-3xl mx-auto">
-            Contact us today for a consultation and let us help bring your vision to life.
+            Contact us today for a consultation and let us help bring your
+            vision to life.
           </p>
-          <Link href="/contact" className="bg-white text-sky-700 hover:bg-gray-100 px-10 py-4 text-lg font-semibold transition duration-300 inline-block">
+          <Link
+            href="/contact"
+            className="bg-white text-sky-700 hover:bg-gray-100 px-10 py-4 text-lg font-semibold transition duration-300 inline-block"
+          >
             CONTACT US TODAY
           </Link>
         </div>
       </section>
     </>
-  )
+  );
 }
