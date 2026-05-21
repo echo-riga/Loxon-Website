@@ -8,12 +8,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div>
-           <div className="flex items-center gap-2 mb-4">
-  <img src="/loxon-logo.png" alt="Loxon Logo" className="w-10 h-10 object-contain" />
-  <span className="text-2xl font-bold text-white">
-    LOXON<span className="text-sky-500">PH</span>
-  </span>
-</div>
+            <div className="flex items-center gap-2 mb-4">
+              <img src="/loxon-logo.png" alt="Loxon Logo" className="w-10 h-10 object-contain" />
+              <span className="text-xl font-bold text-white">
+                Loxon Philippines, Inc.
+              </span>
+            </div>
             <p className="text-gray-400 leading-relaxed mb-4">
               Premier engineering and construction company delivering excellence across the Philippines since 1983.
             </p>
@@ -64,14 +64,6 @@ export default function Footer() {
               <li>Saturday: 9:00 AM - 1:00 PM</li>
               <li>Sunday: Closed</li>
             </ul>
-            <div className="mt-6">
-              <h4 className="text-white font-semibold text-lg mb-3">Follow Us</h4>
-              <div className="flex gap-4">
-                <a href="#" className="text-gray-400 hover:text-sky-400 transition duration-300">LinkedIn</a>
-                <a href="#" className="text-gray-400 hover:text-sky-400 transition duration-300">Facebook</a>
-                <a href="#" className="text-gray-400 hover:text-sky-400 transition duration-300">Twitter</a>
-              </div>
-            </div>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 // app/page.tsx
 import Link from "next/link";
 import { getProjects, getOurCompany, getClients } from "@/lib/api";
-
+import FeaturedProjects from '@/components/FeaturedProjects'
 export default async function HomePage() {
   const [projects, company, clients] = await Promise.all([
     getProjects(),
@@ -184,138 +184,78 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Projects (unchanged) */}
+          {/* Featured Projects */}
       <section className="py-24 md:py-32 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="flex justify-between items-end mb-16 flex-wrap gap-4 border-b border-gray-200 pb-6">
             <div>
-              <span className="text-sky-600 text-base font-semibold tracking-wider uppercase">
-                Portfolio
-              </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mt-2">
-                Featured Projects
-              </h2>
-              <p className="text-xl text-gray-600 mt-3 max-w-2xl">
-                Delivering engineering excellence across the Philippines.
-              </p>
+              <span className="text-sky-600 text-base font-semibold tracking-wider uppercase">Portfolio</span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mt-2">Featured Projects</h2>
+              <p className="text-xl text-gray-600 mt-3 max-w-2xl">Delivering engineering excellence across the Philippines.</p>
             </div>
-            <Link
-              href="/projects"
-              className="text-sky-600 font-semibold text-lg hover:text-sky-700 transition duration-300 inline-flex items-center group"
-            >
+            <Link href="/projects" className="text-sky-600 font-semibold text-lg hover:text-sky-700 transition duration-300 inline-flex items-center group">
               VIEW ALL PROJECTS
-              <span className="ml-1 transition-transform group-hover:translate-x-1">
-                →
-              </span>
+              <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {featuredProjects.map((project: any, idx: number) => (
-              <div key={project.id} className="group">
-                <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
-                  {project.image_url && (
-                    <img
-                      src={project.image_url}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                </div>
-                <div className="mt-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition duration-300">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed line-clamp-3">
-                    {project.description}
-                  </p>
-                  {project.video_url && (
-                    <div className="mt-4">
-                      <a
-                        href={project.video_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sky-600 font-medium hover:underline inline-flex items-center gap-1 text-sm uppercase tracking-wide"
-                      >
-                        Watch Video
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M14 5l7 7m0 0l-7 7m7-7H3"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <FeaturedProjects projects={featuredProjects} />
         </div>
       </section>
 
-      {/* Partners Section (unchanged) */}
-      {clients.length > 0 && (
-        <section className="py-24 md:py-32 bg-gray-50 w-full">
-          <div className="w-full px-8 md:px-16 lg:px-32">
-            <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
-              <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
-                Trusted by Industry Leaders
-              </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900">
-                Our Partners
-              </h2>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                We collaborate with the most respected names in engineering,
-                construction, and building technology.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12">
-              {clients.slice(0, 5).map((client: any, idx: number) => (
-                <div
-                  key={client.id}
-                  className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                  style={{ animationDelay: `${idx * 0.05}s` }}
-                >
-                  <div className="h-28 w-full flex items-center justify-center mb-4 overflow-hidden">
-                    {client.image_url ? (
-                      <img
-                        src={client.image_url}
-                        alt={client.title}
-                        className="max-h-20 max-w-full object-contain transition duration-300 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="h-20 w-full flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-sky-50 transition">
-                        <span className="text-gray-500 group-hover:text-sky-600 font-semibold text-center px-2">
-                          {client.title}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-center text-gray-600 text-sm font-medium group-hover:text-sky-600 transition">
+     {/* Partners Section - larger, uncropped logos */}
+{clients.length > 0 && (
+  <section className="py-24 md:py-32 bg-gray-50 w-full">
+    <div className="w-full px-8 md:px-16 lg:px-32">
+      <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
+        <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
+          Trusted by Industry Leaders
+        </span>
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900">
+          Our Partners
+        </h2>
+        <p className="text-xl text-gray-600 leading-relaxed">
+          We collaborate with the most respected names in engineering,
+          construction, and building technology.
+        </p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12">
+        {clients.slice(0, 5).map((client: any, idx: number) => (
+          <div
+            key={client.id}
+            className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            style={{ animationDelay: `${idx * 0.05}s` }}
+          >
+            {/* Larger logo container – no cropping */}
+            <div className="h-32 w-full flex items-center justify-center mb-4">
+              {client.image_url ? (
+                <img
+                  src={client.image_url}
+                  alt={client.title}
+                  className="max-h-24 max-w-full object-contain transition duration-300 group-hover:scale-110"
+                />
+              ) : (
+                <div className="h-24 w-full flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-sky-50 transition">
+                  <span className="text-gray-500 group-hover:text-sky-600 font-semibold text-center px-2">
                     {client.title}
-                  </p>
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></div>
+                  </span>
                 </div>
-              ))}
+              )}
             </div>
-            {clients.length === 0 && (
-              <div className="text-center py-20">
-                <p className="text-gray-500 text-xl">
-                  Partner logos will appear here.
-                </p>
-              </div>
-            )}
+            <p className="text-center text-gray-600 text-sm font-medium group-hover:text-sky-600 transition">
+              {client.title}
+            </p>
+            <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></div>
           </div>
-        </section>
+        ))}
+      </div>
+      {clients.length === 0 && (
+        <div className="text-center py-20">
+          <p className="text-gray-500 text-xl">Partner logos will appear here.</p>
+        </div>
       )}
+    </div>
+  </section>
+)}
 
       {/* CTA Section (unchanged) */}
       <section className="py-24 bg-sky-700 w-full">

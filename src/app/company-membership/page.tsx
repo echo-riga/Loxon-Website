@@ -46,11 +46,13 @@ export default async function CompanyMembershipPage() {
                   >
                     {client.image_url && (
                       <div className="flex justify-center mb-5">
-                        <img
-                          src={client.image_url}
-                          alt={client.title}
-                          className="w-24 h-24 rounded-full object-cover border-2 border-sky-200"
-                        />
+                        <div className="w-40 h-40 flex items-center justify-center bg-white rounded-lg p-2">
+                          <img
+                            src={client.image_url}
+                            alt={client.title}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
                       </div>
                     )}
                     <h2 className="text-2xl font-bold mb-3 text-gray-900">{client.title}</h2>
@@ -84,11 +86,13 @@ export default async function CompanyMembershipPage() {
                   >
                     {client.image_url && (
                       <div className="flex justify-center mb-5">
-                        <img
-                          src={client.image_url}
-                          alt={client.title}
-                          className="w-24 h-24 rounded-full object-cover border-2 border-sky-200"
-                        />
+                        <div className="w-40 h-40 flex items-center justify-center bg-white rounded-lg p-2">
+                          <img
+                            src={client.image_url}
+                            alt={client.title}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        </div>
                       </div>
                     )}
                     <h2 className="text-2xl font-bold mb-3 text-gray-900">{client.title}</h2>
