@@ -1,17 +1,31 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { submitContactForm } from '@/lib/api'
 
 export default function ContactPage() {
+  const searchParams = useSearchParams()
+  const typeParam = searchParams.get('type')
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: '',
+    inquiryType: 'sales', // default
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+  // Pre‑select the toggle based on URL parameter
+  useEffect(() => {
+    if (typeParam === 'service') {
+      setFormData((prev) => ({ ...prev, inquiryType: 'service' }))
+    } else if (typeParam === 'sales') {
+      setFormData((prev) => ({ ...prev, inquiryType: 'sales' }))
+    }
+  }, [typeParam])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,7 +35,13 @@ export default function ContactPage() {
     try {
       await submitContactForm(formData)
       setSubmitStatus({ type: 'success', message: 'Thank you for reaching out. We will respond within 24 hours.' })
-      setFormData({ name: '', email: '', subject: '', message: '' })
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+        inquiryType: 'sales',
+      })
     } catch {
       setSubmitStatus({ type: 'error', message: 'Something went wrong. Please try again.' })
     } finally {
@@ -53,7 +73,7 @@ export default function ContactPage() {
       <section className="py-24 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Contact Info */}
+            {/* Contact Info (unchanged) */}
             <div className="bg-gray-50 p-8 rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
               <div className="space-y-6">
@@ -93,7 +113,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Contact Form with Left Border Accent */}
+            {/* Contact Form with modern toggle */}
             <div className="bg-white border border-gray-200 border-l-8 border-l-sky-600 p-8 shadow-sm rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Send a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -117,6 +137,36 @@ export default function ContactPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
+
+                {/* Inquiry Type Toggle (modern segmented control) */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">I am contacting for *</label>
+                  <div className="flex rounded-md shadow-sm border border-gray-300 p-1 bg-gray-50 w-full max-w-xs">
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, inquiryType: 'sales' })}
+                      className={`flex-1 px-4 py-2 text-sm font-medium rounded transition ${
+                        formData.inquiryType === 'sales'
+                          ? 'bg-sky-600 text-white'
+                          : 'bg-transparent text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Sales
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, inquiryType: 'service' })}
+                      className={`flex-1 px-4 py-2 text-sm font-medium rounded transition ${
+                        formData.inquiryType === 'service'
+                          ? 'bg-sky-600 text-white'
+                          : 'bg-transparent text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      Service / Support
+                    </button>
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
                   <input

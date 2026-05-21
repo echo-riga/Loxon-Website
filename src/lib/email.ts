@@ -7,22 +7,25 @@ export async function sendContactNotification(data: {
   email: string
   subject: string
   message: string
+  inquiryType: string
 }) {
+  const typeLabel = data.inquiryType === 'sales' ? 'Sales Inquiry' : 'Technical Support / Service Request'
   const htmlContent = `
-    <h2>New Contact Form Submission</h2>
+    <h2>New Contact Form Submission (${typeLabel})</h2>
     <p><strong>Name:</strong> ${data.name}</p>
     <p><strong>Email:</strong> ${data.email}</p>
+    <p><strong>Inquiry Type:</strong> ${typeLabel}</p>
     <p><strong>Subject:</strong> ${data.subject || 'No subject'}</p>
     <p><strong>Message:</strong></p>
     <p>${data.message.replace(/\n/g, '<br>')}</p>
   `
 
   await resend.emails.send({
-    from: 'Loxon Philippines <onboarding@resend.dev>', // or your verified domain
+    from: 'Loxon Philippines <onboarding@resend.dev>',
     to: [process.env.CONTACT_EMAIL_TO || 'rigaecho@gmail.com'],
     replyTo: data.email,
-    subject: `Contact Form: ${data.subject || 'New message'} from ${data.name}`,
-    text: `Name: ${data.name}\nEmail: ${data.email}\nSubject: ${data.subject}\n\nMessage:\n${data.message}`,
+    subject: `${typeLabel}: ${data.subject || 'New message'} from ${data.name}`,
+    text: `Inquiry Type: ${typeLabel}\nName: ${data.name}\nEmail: ${data.email}\nSubject: ${data.subject}\n\nMessage:\n${data.message}`,
     html: htmlContent,
   })
 }

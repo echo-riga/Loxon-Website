@@ -41,20 +41,26 @@ export default async function HomePage() {
               construction solutions from infrastructure to industrial projects
               with unwavering quality and safety.
             </p>
-            <div className="flex flex-wrap gap-4 sm:gap-6">
-              <Link
-                href="/projects"
-                className="bg-sky-600 hover:bg-sky-700 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block"
-              >
-                VIEW OUR WORK
-              </Link>
-              <Link
-                href="/contact"
-                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block"
-              >
-                REQUEST A QUOTE
-              </Link>
-            </div>
+           <div className="flex flex-wrap gap-4 sm:gap-6">
+  <Link
+    href="/projects"
+    className="bg-sky-600 hover:bg-sky-700 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block"
+  >
+    VIEW OUR WORK
+  </Link>
+  <Link
+    href="/contact?type=sales"
+    className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block"
+  >
+    SALES INQUIRY
+  </Link>
+  <Link
+    href="/contact?type=service"
+    className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block"
+  >
+    SERVICE REQUEST
+  </Link>
+</div>
           </div>
         </div>
         {/* Scroll Indicator - hide on very small screens if needed */}
