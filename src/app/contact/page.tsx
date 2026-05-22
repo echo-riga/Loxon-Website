@@ -13,7 +13,7 @@ export default function ContactPage() {
     email: '',
     subject: '',
     message: '',
-    inquiryType: 'sales', // default
+    inquiryType: 'sales',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
@@ -24,6 +24,19 @@ export default function ContactPage() {
       setFormData((prev) => ({ ...prev, inquiryType: 'service' }))
     } else if (typeParam === 'sales') {
       setFormData((prev) => ({ ...prev, inquiryType: 'sales' }))
+    }
+  }, [typeParam])
+
+  // Scroll to contact form when URL contains ?type=sales or ?type=service
+  useEffect(() => {
+    if (typeParam === 'sales' || typeParam === 'service') {
+      const formElement = document.getElementById('contact-form')
+      if (formElement) {
+        // Small delay to ensure the page has fully rendered
+        setTimeout(() => {
+          formElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 200)
+      }
     }
   }, [typeParam])
 
@@ -73,7 +86,7 @@ export default function ContactPage() {
       <section className="py-24 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Contact Info (unchanged) */}
+            {/* Contact Info */}
             <div className="bg-gray-50 p-8 rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
               <div className="space-y-6">
@@ -113,8 +126,11 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Contact Form with modern toggle */}
-            <div className="bg-white border border-gray-200 border-l-8 border-l-sky-600 p-8 shadow-sm rounded-lg">
+            {/* Contact Form with Left Border Accent */}
+            <div
+              id="contact-form"
+              className="bg-white border border-gray-200 border-l-8 border-l-sky-600 p-8 shadow-sm rounded-lg scroll-mt-20"
+            >
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Send a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
@@ -138,7 +154,7 @@ export default function ContactPage() {
                   />
                 </div>
 
-                {/* Inquiry Type Toggle (modern segmented control) */}
+                {/* Modern segmented toggle for inquiry type */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">I am contacting for *</label>
                   <div className="flex rounded-md shadow-sm border border-gray-300 p-1 bg-gray-50 w-full max-w-xs">
