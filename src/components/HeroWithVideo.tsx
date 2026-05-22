@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function HeroWithVideo() {
   return (
     <section className="relative h-screen min-h-[700px] w-full flex items-center bg-gray-900 overflow-hidden">
-      {/* Local video background – covers full area, no black bars */}
+      {/* Video Background – Cloudinary with auto format & quality */}
       <video
         autoPlay
         loop
@@ -13,10 +13,13 @@ export default function HeroWithVideo() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover object-center"
       >
-        <source src="/background-video.mp4" type="video/mp4" />
+        <source
+          src="https://res.cloudinary.com/dv70g6upv/video/upload/f_auto:video,q_auto/v1779411156/background-video_1_nhlpwp.mp4"
+          type="video/mp4"
+        />
       </video>
 
-      {/* Overlay gradient */}
+      {/* Overlay Gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60" />
 
       {/* Content */}
@@ -48,7 +51,7 @@ export default function HeroWithVideo() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll Indicator */}
       <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce-slow hidden sm:block">
         <div className="w-8 h-14 border-2 border-white rounded-full flex justify-center">
           <div className="w-1.5 h-3 bg-white rounded-full mt-3 animate-pulse-slow" />
