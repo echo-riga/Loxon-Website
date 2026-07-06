@@ -1,4 +1,5 @@
 import { getClients } from '@/lib/api'
+import Reveal from '@/components/Reveal'
 
 export const metadata = {
   title: 'Company Membership & Partners | Loxon Philippines Inc.',
@@ -35,14 +36,17 @@ export default async function CompanyMembershipPage() {
         <div className="w-full px-8 md:px-16 lg:px-32">
           {memberships.length > 0 && (
             <div className="mb-20">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Company Membership</h2>
-              <div className="w-20 h-1 bg-sky-600 mb-10"></div>
+              <Reveal animation="fade-up">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Company Membership</h2>
+                <div className="w-20 h-1 bg-sky-600 mb-10"></div>
+              </Reveal>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {memberships.map((client: any, idx: number) => (
-                  <div
+                  <Reveal
                     key={client.id}
-                    className="bg-gray-50 p-8 hover:shadow-xl transition duration-300 animate-fade-in-up text-center flex flex-col h-full"
-                    style={{ animationDelay: `${idx * 0.1}s` }}
+                    animation="fade-up"
+                    delay={idx * 120}
+                    className="bg-gray-50 p-8 hover:shadow-xl transition duration-300 text-center flex flex-col h-full"
                   >
                     {client.image_url && (
                       <div className="flex justify-center mb-5">
@@ -67,7 +71,7 @@ export default async function CompanyMembershipPage() {
                         VISIT WEBSITE
                       </a>
                     )}
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
@@ -75,14 +79,17 @@ export default async function CompanyMembershipPage() {
 
           {partners.length > 0 && (
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Business Partners</h2>
-              <div className="w-20 h-1 bg-sky-600 mb-10"></div>
+              <Reveal animation="fade-up">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Business Partners</h2>
+                <div className="w-20 h-1 bg-sky-600 mb-10"></div>
+              </Reveal>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {partners.map((client: any, idx: number) => (
-                  <div
+                  <Reveal
                     key={client.id}
-                    className="bg-gray-50 p-8 hover:shadow-xl transition duration-300 animate-fade-in-up text-center flex flex-col h-full"
-                    style={{ animationDelay: `${idx * 0.1}s` }}
+                    animation="fade-up"
+                    delay={idx * 120}
+                    className="bg-gray-50 p-8 hover:shadow-xl transition duration-300 text-center flex flex-col h-full"
                   >
                     {client.image_url && (
                       <div className="flex justify-center mb-5">
@@ -107,7 +114,7 @@ export default async function CompanyMembershipPage() {
                         VISIT WEBSITE
                       </a>
                     )}
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>

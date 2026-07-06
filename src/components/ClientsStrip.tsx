@@ -1,29 +1,30 @@
 'use client'
 
 import type { Client } from '@/types/loxon'
+import Marquee from './Marquee'
 
 export default function ClientsStrip({ clients }: { clients: Client[] }) {
+  const items = clients.slice(0, 8)
+
   return (
-    <div style={{
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '2rem',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-      {clients.slice(0, 6).map(c => (
+    <Marquee speed={30} direction="left" pauseOnHover>
+      {items.map((c) => (
         <div
           key={c.id}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', opacity: 0.7, transition: 'opacity 0.2s', cursor: 'default' }}
-          onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
-          onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '0.7'}
+          className="flex flex-col items-center gap-2 mx-8 sm:mx-12 opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-default"
         >
-          {c.image_url
-            ? <img src={c.image_url} alt={c.title} style={{ height: '48px', objectFit: 'contain', filter: 'grayscale(1)' }} />
-            : <div style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 600, color: 'var(--gray-700)' }}>{c.title}</div>
-          }
+          {c.image_url ? (
+            <img
+              src={c.image_url}
+              alt={c.title}
+              className="h-12 sm:h-16 object-contain"
+              style={{ filter: 'grayscale(1)' }}
+            />
+          ) : (
+            <div className="text-lg font-semibold text-gray-700">{c.title}</div>
+          )}
         </div>
       ))}
-    </div>
+    </Marquee>
   )
 }
