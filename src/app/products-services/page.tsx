@@ -1,4 +1,5 @@
 import { getProductsServices } from '@/lib/api'
+import Reveal from '@/components/Reveal'
 
 export const metadata = {
   title: 'Products & Services | Loxon Philippines Inc.',
@@ -33,10 +34,11 @@ alt="Engineering products and services"
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {items.map((item: any, idx: number) => (
-              <div
+              <Reveal
                 key={item.id}
-                className="bg-gray-50 overflow-hidden shadow-md hover:shadow-xl transition duration-500 animate-fade-in-up"
-                style={{ animationDelay: `${idx * 0.1}s` }}
+                animation="fade-up"
+                delay={idx * 120}
+                className="bg-gray-50 overflow-hidden shadow-md hover:shadow-xl transition duration-500"
               >
                 {item.image_url && (
                   <img src={item.image_url} alt={item.title} className="w-full h-64 object-cover" />
@@ -55,7 +57,7 @@ alt="Engineering products and services"
                     </a>
                   )}
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
           {items.length === 0 && (

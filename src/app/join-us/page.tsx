@@ -1,5 +1,6 @@
 import { getJobs } from '@/lib/api'
 import JobListings from '@/components/JobListings'
+import Reveal from '@/components/Reveal'
 
 export const metadata = {
   title: 'Join Our Team | Loxon Philippines Inc.',
@@ -39,9 +40,9 @@ export default async function JoinUsPage() {
                 <p className="text-gray-500 text-xl">No open positions at this time. Check back soon!</p>
               </div>
             )}
-            <div className="text-center mt-12 text-gray-600">
+            <Reveal animation="fade-up" className="text-center mt-12 text-gray-600">
               <p>Or send your resume to <a href="mailto:careers@loxon.ph" className="text-sky-600 hover:underline">careers@loxon.ph</a></p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

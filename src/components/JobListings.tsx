@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import JobApplicationModal from './JobApplicationModal'
+import Reveal from './Reveal'
 
 interface Job {
   id: number
@@ -15,10 +16,11 @@ export default function JobListings({ jobs }: { jobs: Job[] }) {
   return (
     <>
       {jobs.map((job, idx) => (
-        <div
+        <Reveal
           key={job.id}
-          className="bg-gray-50 rounded-lg p-8 mb-8 hover:shadow-md transition duration-300 animate-fade-in-up"
-          style={{ animationDelay: `${idx * 0.1}s` }}
+          animation="fade-up"
+          delay={idx * 120}
+          className="bg-gray-50 rounded-lg p-8 mb-8 hover:shadow-md transition duration-300"
         >
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-sky-700">{job.title}</h2>
           <div className="text-gray-700 whitespace-pre-wrap leading-relaxed mb-6">
@@ -30,7 +32,7 @@ export default function JobListings({ jobs }: { jobs: Job[] }) {
           >
             APPLY NOW
           </button>
-        </div>
+        </Reveal>
       ))}
       {selectedJob && (
         <JobApplicationModal
