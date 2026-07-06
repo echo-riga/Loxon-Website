@@ -44,9 +44,6 @@ export default function HeroWithVideo() {
             <Link href="/contact?type=sales" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
               SALES INQUIRY
             </Link>
-            <Link href="/contact?type=service" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
-              SERVICE REQUEST
-            </Link>
           </div>
         </div>
       </div>

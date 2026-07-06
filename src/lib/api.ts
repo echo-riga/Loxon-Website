@@ -55,6 +55,11 @@ type ContactFormData = {
   message: string
 }
 
+type ChatMessage = {
+  role: 'user' | 'assistant' | 'system'
+  content: string
+}
+
 type JobApplicationData = {
   job_id: number
   full_name: string
@@ -82,4 +87,14 @@ export async function submitJobApplication(data: JobApplicationData) {
   })
   if (!res.ok) throw new Error('Failed to submit job application')
   return res.json()
+}
+
+export async function sendChatMessage(messages: ChatMessage[]) {
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages }),
+  })
+  if (!res.ok) throw new Error('Failed to get chat response')
+  return res.json() as Promise<{ reply: string }>
 }

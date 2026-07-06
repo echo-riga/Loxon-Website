@@ -16,6 +16,10 @@ interface Project {
   image_url: string | null
   description: string | null
   video_url: string | null
+  project_type: string | null
+  constructed_date: string | null
+  location: string | null
+  client_name: string | null
   images: ProjectImage[]
 }
 

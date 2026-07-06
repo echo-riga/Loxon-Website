@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Reveal from './Reveal'
 
 interface ProjectImage {
@@ -15,35 +15,114 @@ interface Project {
   image_url: string | null
   description: string | null
   video_url: string | null
+  project_type: string | null
+  constructed_date: string | null
+  location: string | null
+  client_name: string | null
   images: ProjectImage[]
+}
+
+const AUTO_ROTATE_MS = 5000
+
+// Format a date string (YYYY-MM-DD or ISO) as a full readable date
+const fmtFullDate = (val: string | null): string => {
+  if (!val) return '—'
+  const d = new Date(val)
+  if (isNaN(d.getTime())) return val
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+// Format a date string as year only
+const fmtYear = (val: string | null): string => {
+  if (!val) return '—'
+  const d = new Date(val)
+  if (isNaN(d.getTime())) return '—'
+  return String(d.getFullYear())
 }
 
 export default function ProjectsGrid({ projects }: { projects: Project[] }) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const openModal = (project: Project) => {
     setSelectedProject(project)
     setCurrentImageIndex(0)
+    setIsPaused(false)
   }
 
-  const closeModal = () => setSelectedProject(null)
-
-  const nextImage = () => {
-    if (selectedProject && selectedProject.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images.length)
+  const closeModal = () => {
+    setSelectedProject(null)
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
     }
   }
+
+  const nextImage = useCallback(() => {
+    setCurrentImageIndex((prev) => {
+      if (!selectedProject) return prev
+      const count = selectedProject.images.length
+      if (count === 0) return prev
+      return (prev + 1) % count
+    })
+  }, [selectedProject])
 
   const prevImage = () => {
-    if (selectedProject && selectedProject.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev - 1 + selectedProject.images.length) % selectedProject.images.length)
-    }
+    setCurrentImageIndex((prev) => {
+      if (!selectedProject) return prev
+      const count = selectedProject.images.length
+      if (count === 0) return prev
+      return (prev - 1 + count) % count
+    })
   }
+
+  // Auto-rotate carousel every AUTO_ROTATE_MS, pause on hover
+  useEffect(() => {
+    if (!selectedProject || isPaused) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+      return
+    }
+    if (selectedProject.images.length <= 1) return
+
+    timerRef.current = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images.length)
+    }, AUTO_ROTATE_MS)
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+    }
+  }, [selectedProject, isPaused])
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal()
+    }
+    if (selectedProject) window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [selectedProject])
+
+  // Build the list of images to show in the modal:
+  // prefer sub-images, fall back to the project's main image_url
+  const modalImages: { image_url: string; caption: string | null }[] = selectedProject
+    ? selectedProject.images.length > 0
+      ? selectedProject.images
+      : selectedProject.image_url
+        ? [{ image_url: selectedProject.image_url, caption: null }]
+        : []
+    : []
 
   return (
     <>
-      {/* Hero Section (unchanged from your original) */}
+      {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80"
@@ -62,57 +141,68 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
         </div>
       </div>
 
-      {/* Projects Grid */}
+      {/* Projects Table */}
       <section className="py-24 md:py-32 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {projects.map((project, idx) => (
-              <Reveal
-                key={project.id}
-                animation="fade-up"
-                delay={idx * 100}
-                className="group cursor-pointer"
-              >
-                <div onClick={() => openModal(project)}>
-                <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
-                  {project.image_url && (
-                    <img
-                      src={project.image_url}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                </div>
-                <div className="mt-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition duration-300">
-                    {project.title}
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed line-clamp-3">
-                    {project.description}
-                  </p>
-                  {project.video_url && (
-                    <div className="mt-4">
-                      <a
-                        href={project.video_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sky-600 font-medium hover:underline inline-flex items-center gap-1 text-sm uppercase tracking-wide"
-                        onClick={(e) => e.stopPropagation()}
+          {projects.length > 0 ? (
+            <Reveal animation="fade-up">
+              <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="bg-sky-600 text-white">
+                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Project</th>
+                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Type</th>
+                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Location</th>
+                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Year</th>
+                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Client</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.map((project, idx) => (
+                      <tr
+                        key={project.id}
+                        onClick={() => openModal(project)}
+                        className={`cursor-pointer transition duration-200 hover:bg-sky-50 ${
+                          idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'
+                        } border-t border-gray-100`}
                       >
-                        Watch Video
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                      </a>
-                    </div>
-                  )}
-                </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          {projects.length === 0 && (
+                        {/* Project column: title (hyperlink-styled) + description subtitle */}
+                        <td className="px-6 py-5 align-top">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openModal(project)
+                            }}
+                            className="text-left text-lg font-bold text-sky-600 hover:text-sky-700 hover:underline transition duration-200 focus:outline-none"
+                          >
+                            {project.title}
+                          </button>
+                          {project.description && (
+                            <p className="text-gray-600 text-sm leading-relaxed mt-1 line-clamp-2 max-w-xl">
+                              {project.description}
+                            </p>
+                          )}
+                        </td>
+                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                          {project.project_type || '—'}
+                        </td>
+                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                          {project.location || '—'}
+                        </td>
+                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                          {fmtYear(project.constructed_date)}
+                        </td>
+                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                          {project.client_name || '—'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Reveal>
+          ) : (
             <div className="text-center py-20">
               <p className="text-gray-500 text-xl">No projects available at this time.</p>
             </div>
@@ -120,62 +210,120 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
         </div>
       </section>
 
-      {/* Modal with Slider */}
+      {/* Side-by-Side Modal */}
       {selectedProject && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 md:p-8"
           onClick={closeModal}
         >
           <div
-            className="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden"
+            className="relative w-full max-w-6xl bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
-            <div className="flex justify-between items-center p-4 border-b border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900">{selectedProject.title}</h3>
-              <button
-                onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                &times;
-              </button>
-            </div>
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/70 text-white text-xl transition duration-200"
+              aria-label="Close"
+            >
+              &times;
+            </button>
 
-            {/* Slider Area */}
-            <div className="relative aspect-video bg-gray-100">
-              {selectedProject.images && selectedProject.images.length > 0 ? (
+            {/* Left 50% — Image Carousel */}
+            <div
+              className="w-full md:w-1/2 bg-gray-900 relative min-h-[280px] md:min-h-[60vh] flex items-center justify-center"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+            >
+              {modalImages.length > 0 ? (
                 <>
                   <img
-                    src={selectedProject.images[currentImageIndex].image_url}
-                    alt={selectedProject.images[currentImageIndex].caption || `Sub‑image of ${selectedProject.title}`}
-                    className="w-full h-full object-contain"
+                    src={modalImages[currentImageIndex]?.image_url}
+                    alt={modalImages[currentImageIndex]?.caption || selectedProject.title}
+                    className="w-full h-full object-contain max-h-[60vh]"
                   />
-                  {/* Previous Arrow */}
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center"
-                  >
-                    &lsaquo;
+                  {/* Prev arrow */}
+                  {modalImages.length > 1 && (
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl transition"
+                      aria-label="Previous image"
+                    >
+                      &lsaquo;
+                    </button>
+                  )}
+                  {/* Next arrow */}
+                  {modalImages.length > 1 && (
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl transition"
+                      aria-label="Next image"
+                    >
+                      &rsaquo;
                   </button>
-                  {/* Next Arrow */}
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center"
-                  >
-                    &rsaquo;
-                  </button>
-                  {/* Caption & Counter */}
-                  <div className="absolute bottom-4 left-0 right-0 text-center text-white bg-black/50 py-2 text-sm">
-                    {selectedProject.images[currentImageIndex].caption && (
-                      <span>{selectedProject.images[currentImageIndex].caption} &nbsp;|&nbsp; </span>
-                    )}
-                    {currentImageIndex + 1} / {selectedProject.images.length}
-                  </div>
+                  )}
+                  {/* Caption & counter */}
+                  {modalImages.length > 1 && (
+                    <div className="absolute bottom-0 left-0 right-0 text-center text-white bg-black/60 py-2 text-sm">
+                      {modalImages[currentImageIndex]?.caption && (
+                        <span>{modalImages[currentImageIndex].caption} &nbsp;|&nbsp; </span>
+                      )}
+                      {currentImageIndex + 1} / {modalImages.length}
+                    </div>
+                  )}
                 </>
               ) : (
-                <div className="flex items-center justify-center h-full text-gray-500">
-                  No sub‑images available for this project.
+                <div className="flex items-center justify-center h-full text-gray-400 p-8 text-center">
+                  No images available for this project.
                 </div>
+              )}
+            </div>
+
+            {/* Right 50% — Project Details */}
+            <div className="w-full md:w-1/2 p-8 md:p-10 overflow-y-auto">
+              <h3 className="text-3xl font-bold text-gray-900 mb-4 pr-8">
+                {selectedProject.title}
+              </h3>
+
+              {selectedProject.description && (
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  {selectedProject.description}
+                </p>
+              )}
+
+              {/* Metadata grid */}
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6">
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Type</dt>
+                  <dd className="text-gray-800">{selectedProject.project_type || '—'}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Location</dt>
+                  <dd className="text-gray-800">{selectedProject.location || '—'}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Constructed Date</dt>
+                  <dd className="text-gray-800">{fmtFullDate(selectedProject.constructed_date)}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Client</dt>
+                  <dd className="text-gray-800">{selectedProject.client_name || '—'}</dd>
+                </div>
+              </dl>
+
+              {/* Video link */}
+              {selectedProject.video_url && (
+                <a
+                  href={selectedProject.video_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sky-600 font-medium hover:underline text-sm uppercase tracking-wide"
+                >
+                  Watch Video
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
               )}
             </div>
           </div>
