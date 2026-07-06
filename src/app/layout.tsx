@@ -5,6 +5,7 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
+import Chatbot from '@/components/Chatbot'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="min-h-screen">{children}</main>
         <Footer />
         <BackToTop />
+        <Chatbot />
       </body>
     </html>
   )

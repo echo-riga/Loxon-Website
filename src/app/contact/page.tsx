@@ -14,23 +14,13 @@ export default function ContactPage() {
     email: '',
     subject: '',
     message: '',
-    inquiryType: 'sales',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
-  // Pre‑select the toggle based on URL parameter
+  // Scroll to contact form when URL contains ?type=sales
   useEffect(() => {
-    if (typeParam === 'service') {
-      setFormData((prev) => ({ ...prev, inquiryType: 'service' }))
-    } else if (typeParam === 'sales') {
-      setFormData((prev) => ({ ...prev, inquiryType: 'sales' }))
-    }
-  }, [typeParam])
-
-  // Scroll to contact form when URL contains ?type=sales or ?type=service
-  useEffect(() => {
-    if (typeParam === 'sales' || typeParam === 'service') {
+    if (typeParam === 'sales') {
       const formElement = document.getElementById('contact-form')
       if (formElement) {
         // Small delay to ensure the page has fully rendered
@@ -54,7 +44,6 @@ export default function ContactPage() {
         email: '',
         subject: '',
         message: '',
-        inquiryType: 'sales',
       })
     } catch {
       setSubmitStatus({ type: 'error', message: 'Something went wrong. Please try again.' })
@@ -154,35 +143,6 @@ export default function ContactPage() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
-                </div>
-
-                {/* Modern segmented toggle for inquiry type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">I am contacting for *</label>
-                  <div className="flex rounded-md shadow-sm border border-gray-300 p-1 bg-gray-50 w-full max-w-xs">
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, inquiryType: 'sales' })}
-                      className={`flex-1 px-4 py-2 text-sm font-medium rounded transition ${
-                        formData.inquiryType === 'sales'
-                          ? 'bg-sky-600 text-white'
-                          : 'bg-transparent text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      Sales
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, inquiryType: 'service' })}
-                      className={`flex-1 px-4 py-2 text-sm font-medium rounded transition ${
-                        formData.inquiryType === 'service'
-                          ? 'bg-sky-600 text-white'
-                          : 'bg-transparent text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      Service / Support
-                    </button>
-                  </div>
                 </div>
 
                 <div>
