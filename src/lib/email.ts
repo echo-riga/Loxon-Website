@@ -20,14 +20,18 @@ export async function sendContactNotification(data: {
     <p>${data.message.replace(/\n/g, '<br>')}</p>
   `
 
-  await resend.emails.send({
-    from: 'Loxon Philippines <onboarding@resend.dev>',
-    to: [process.env.CONTACT_EMAIL_TO || 'rigaecho@gmail.com'],
-    replyTo: data.email,
-    subject: `${typeLabel}: ${data.subject || 'New message'} from ${data.name}`,
-    text: `Inquiry Type: ${typeLabel}\nName: ${data.name}\nEmail: ${data.email}\nSubject: ${data.subject}\n\nMessage:\n${data.message}`,
-    html: htmlContent,
-  })
+ const { data: result, error } = await resend.emails.send({
+  from: 'Loxon Philippines <onboarding@resend.dev>',
+  to: [process.env.CONTACT_EMAIL_TO || 'rigaecho@gmail.com'],
+  replyTo: data.email,
+  subject: `${typeLabel}: ${data.subject || 'New message'} from ${data.name}`,
+  text: `Inquiry Type: ${typeLabel}\nName: ${data.name}\nEmail: ${data.email}\nSubject: ${data.subject}\n\nMessage:\n${data.message}`,
+  html: htmlContent,
+})
+console.log('📧 Contact email result:', result)
+console.log('📧 Contact email error:', error)
+console.log('📧 Sending to:', process.env.CONTACT_EMAIL_TO || 'rigaecho@gmail.com')
+if (error) throw new Error(`Resend error: ${JSON.stringify(error)}`)
 }
 
 export async function sendJobApplicationNotification(data: {

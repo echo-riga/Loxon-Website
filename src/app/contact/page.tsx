@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { submitContactForm } from '@/lib/api'
+import Reveal from '@/components/Reveal'
 
 export default function ContactPage() {
   const searchParams = useSearchParams()
@@ -87,7 +88,7 @@ export default function ContactPage() {
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Contact Info */}
-            <div className="bg-gray-50 p-8 rounded-lg">
+            <Reveal animation="fade-right" className="bg-gray-50 p-8 rounded-lg">
               <h2 className="text-3xl font-bold mb-6 text-gray-900">Get in Touch</h2>
               <div className="space-y-6">
                 <div>
@@ -124,14 +125,15 @@ export default function ContactPage() {
                   </p>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
             {/* Contact Form with Left Border Accent */}
-            <div
-              id="contact-form"
-              className="bg-white border border-gray-200 border-l-8 border-l-sky-600 p-8 shadow-sm rounded-lg scroll-mt-20"
-            >
-              <h2 className="text-3xl font-bold mb-6 text-gray-900">Send a Message</h2>
+            <Reveal animation="fade-left" delay={150}>
+              <div
+                id="contact-form"
+                className="bg-white border border-gray-200 border-l-8 border-l-sky-600 p-8 shadow-sm rounded-lg scroll-mt-20"
+              >
+                <h2 className="text-3xl font-bold mb-6 text-gray-900">Send a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
@@ -215,8 +217,9 @@ export default function ContactPage() {
                     {submitStatus.message}
                   </p>
                 )}
-              </form>
-            </div>
+                </form>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

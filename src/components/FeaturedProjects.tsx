@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Reveal from './Reveal'
 
 interface ProjectImage {
   id: number
@@ -34,29 +35,32 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-        {projects.map((project) => (
-          <div
+        {projects.map((project, idx) => (
+          <Reveal
             key={project.id}
+            animation="fade-up"
+            delay={idx * 120}
             className="group cursor-pointer"
-            onClick={() => openModal(project)}
           >
-            <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
-              {project.image_url && (
-                <img
-                  src={project.image_url}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+            <div onClick={() => openModal(project)}>
+              <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
+                {project.image_url && (
+                  <img
+                    src={project.image_url}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+              </div>
+              <div className="mt-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition">
+                  {project.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed line-clamp-3">{project.description}</p>
+              </div>
             </div>
-            <div className="mt-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition">
-                {project.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed line-clamp-3">{project.description}</p>
-            </div>
-          </div>
+          </Reveal>
         ))}
       </div>
 
