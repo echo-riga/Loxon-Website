@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Reveal from './Reveal'
 
 interface ProjectImage {
   id: number
@@ -66,11 +67,13 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
         <div className="w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
             {projects.map((project, idx) => (
-              <div
+              <Reveal
                 key={project.id}
+                animation="fade-up"
+                delay={idx * 100}
                 className="group cursor-pointer"
-                onClick={() => openModal(project)}
               >
+                <div onClick={() => openModal(project)}>
                 <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
                   {project.image_url && (
                     <img
@@ -105,7 +108,8 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
                     </div>
                   )}
                 </div>
-              </div>
+                </div>
+              </Reveal>
             ))}
           </div>
           {projects.length === 0 && (
