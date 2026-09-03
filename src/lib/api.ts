@@ -1,100 +1,29 @@
-// lib/api.ts
+const ADMIN_API_BASE = (process.env.NEXT_PUBLIC_ADMIN_API_BASE || 'https://loxon-admin.vercel.app').replace(/\/$/, '')
 
-// Admin API (external) – GET only (no caching)
-const ADMIN_API_BASE = 'https://loxon-admin.vercel.app'
+type ContactFormData = { name: string; email: string; subject: string; message: string; inquiryType?: string }
+type ChatMessage = { role: 'user' | 'assistant' | 'system'; content: string }
+type JobApplicationData = { job_id: number; full_name: string; email: string; phone?: string; cover_letter?: string; resume_url?: string }
 
-// Frontend API (your own server) – POST endpoints
-const FRONTEND_API_BASE = '' // relative URLs will use the same origin
-
-export async function getProjects() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/projects`, {
-    cache: 'no-store',
-  })
-  if (!res.ok) throw new Error('Failed to fetch projects')
-  return res.json()
+async function request(path: string, options?: RequestInit) {
+  const response = await fetch(`${ADMIN_API_BASE}${path}`, options)
+  if (!response.ok) throw new Error(`Admin API request failed: ${path}`)
+  return response.json()
 }
 
-export async function getProductsServices() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/products-services`, {
-    cache: 'no-store',
-  })
-  if (!res.ok) throw new Error('Failed to fetch products/services')
-  return res.json()
-}
+export const getProjects = () => request('/api/projects', { cache: 'force-cache' })
+export const getProductsServices = () => request('/api/products-services', { cache: 'force-cache' })
+export const getClients = () => request('/api/clients', { cache: 'force-cache' })
+export const getOurCompany = () => request('/api/our-company', { cache: 'force-cache' })
+export const getJobs = () => request('/api/jobs', { cache: 'force-cache' })
 
-export async function getClients() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/clients`, {
-    cache: 'no-store',
-  })
-  if (!res.ok) throw new Error('Failed to fetch clients')
-  return res.json()
-}
+export const submitContactForm = (data: ContactFormData) => request('/api/contact-submissions', {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
+})
 
-export async function getOurCompany() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/our-company`, {
-    cache: 'no-store',
-  })
-  if (!res.ok) throw new Error('Failed to fetch company data')
-  return res.json()
-}
+export const submitJobApplication = (data: JobApplicationData) => request('/api/job-applications', {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
+})
 
-export async function getJobs() {
-  const res = await fetch(`${ADMIN_API_BASE}/api/jobs`, {
-    cache: 'no-store',
-  })
-  if (!res.ok) throw new Error('Failed to fetch jobs')
-  return res.json()
-}
-
-// ─── POST to your own frontend API ─────────────────────────────────────
-
-type ContactFormData = {
-  name: string
-  email: string
-  subject: string
-  message: string
-}
-
-type ChatMessage = {
-  role: 'user' | 'assistant' | 'system'
-  content: string
-}
-
-type JobApplicationData = {
-  job_id: number
-  full_name: string
-  email: string
-  phone?: string
-  cover_letter?: string
-  resume_url?: string
-}
-
-export async function submitContactForm(data: ContactFormData) {
-  const res = await fetch('/api/contact', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  })
-  if (!res.ok) throw new Error('Failed to submit contact form')
-  return res.json()
-}
-
-export async function submitJobApplication(data: JobApplicationData) {
-  const res = await fetch('/api/job-applications', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  })
-  if (!res.ok) throw new Error('Failed to submit job application')
-  return res.json()
-}
-
-export async function sendChatMessage(messages: ChatMessage[]) {
-  const res = await fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages }),
-  })
-  if (!res.ok) throw new Error('Failed to get chat response')
-  return res.json() as Promise<{ reply: string }>
-}
+export const sendChatMessage = (messages: ChatMessage[]) => request('/api/chat', {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages }),
+}) as Promise<{ reply: string }>

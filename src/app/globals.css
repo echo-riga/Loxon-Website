@@ -33,6 +33,91 @@
   }
 }
 
+@keyframes line-scan {
+  0%, 100% {
+    transform: translateX(-18px);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.85;
+  }
+}
+
+@keyframes line-scan-vertical {
+  0%, 100% {
+    transform: translateY(-18px);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateY(18px);
+    opacity: 0.85;
+  }
+}
+
+@keyframes orbit-slow {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.06);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes blueprint-drift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 48px 48px, 96px 96px;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(1.04);
+  }
+}
+
+.animate-line-scan {
+  animation: line-scan 5s ease-in-out infinite;
+}
+
+.animate-line-scan-vertical {
+  animation: line-scan-vertical 5s ease-in-out infinite;
+}
+
+.animate-orbit-slow {
+  animation: orbit-slow 18s linear infinite;
+}
+
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(14, 165, 233, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 165, 233, 0.12) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.blueprint-grid-soft {
+  background-image:
+    linear-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: blueprint-drift 22s linear infinite;
+}
+
+.glow-pulse {
+  animation: glow-pulse 7s ease-in-out infinite;
+}
+
 @keyframes bounce {
   0%, 100% {
     transform: translateY(-25%);
@@ -185,7 +270,12 @@
   }
   .animate-slow-zoom,
   .animate-bounce-slow,
-  .animate-pulse-slow {
+  .animate-pulse-slow,
+  .animate-line-scan,
+  .animate-line-scan-vertical,
+  .animate-orbit-slow,
+  .blueprint-grid-soft,
+  .glow-pulse {
     animation: none !important;
   }
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-
 export default function HeroWithVideo() {
   return (
     <section className="relative h-screen min-h-[700px] w-full flex items-center bg-gray-900 overflow-hidden">
@@ -20,7 +19,7 @@ export default function HeroWithVideo() {
       </video>
 
       {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-slate-950/64 to-black/45" />
 
       {/* Content */}
       <div className="relative z-10 w-full px-6 sm:px-8 md:px-16 lg:px-32 animate-fade-in-up">

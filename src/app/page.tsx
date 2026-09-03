@@ -5,6 +5,7 @@ import HeroWithVideo from '@/components/HeroWithVideo';
 import Reveal from '@/components/Reveal';
 import CountUp from '@/components/CountUp';
 import Marquee from '@/components/Marquee';
+import Structure3DClient from '@/components/Structure3DClient';
 
 export default async function HomePage() {
   const [projects, company, clients] = await Promise.all([
@@ -20,10 +21,12 @@ export default async function HomePage() {
       <HeroWithVideo />
 
       {/* Company Stats - Projects Completed & Years Only */}
-      <section className="py-20 bg-white w-full border-b border-gray-200">
-        <div className="w-full px-8 md:px-16 lg:px-32">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-            <Reveal animation="fade-up" className="text-center py-12 bg-gray-50 hover:shadow-xl transition duration-300">
+      <section className="relative py-20 bg-white w-full border-b border-gray-200 overflow-hidden">
+        <div className="relative z-10 w-full px-8 md:px-16 lg:px-32">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.8fr)] lg:items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <Reveal animation="fade-up" className="group relative overflow-hidden text-center py-12 bg-white/90 border border-sky-100 shadow-sm hover:shadow-xl transition duration-300">
+              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
               <div className="text-7xl font-bold text-sky-600 mb-4">
                 <CountUp end={projects.length} suffix="+" />
               </div>
@@ -31,8 +34,9 @@ export default async function HomePage() {
                 Projects Completed
               </div>
               <div className="text-gray-500 mt-2">Across the Philippines</div>
-            </Reveal>
-            <Reveal animation="fade-up" delay={150} className="text-center py-12 bg-gray-50 hover:shadow-xl transition duration-300">
+              </Reveal>
+              <Reveal animation="fade-up" delay={150} className="group relative overflow-hidden text-center py-12 bg-white/90 border border-sky-100 shadow-sm hover:shadow-xl transition duration-300">
+              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
               <div className="text-7xl font-bold text-sky-600 mb-4">
                 <CountUp end={43} suffix="+" />
               </div>
@@ -40,14 +44,16 @@ export default async function HomePage() {
                 Years of Excellence
               </div>
               <div className="text-gray-500 mt-2">Since 1983</div>
-            </Reveal>
+              </Reveal>
+            </div>
+            <Structure3DClient className="pointer-events-none hidden h-[300px] opacity-[0.28] lg:block" />
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section className="py-24 md:py-32 bg-white w-full">
-        <div className="w-full px-8 md:px-16 lg:px-32">
+      <section className="relative py-24 md:py-32 bg-white w-full overflow-hidden">
+        <div className="relative z-10 w-full px-8 md:px-16 lg:px-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <Reveal animation="fade-right">
               <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
@@ -75,12 +81,14 @@ export default async function HomePage() {
               </Link>
             </Reveal>
             <div className="grid grid-cols-2 gap-6">
-              <Reveal animation="fade-left" className="bg-gray-100 p-8 text-center hover:shadow-xl transition duration-300">
+              <Reveal animation="fade-left" className="group relative overflow-hidden bg-white p-8 text-center border border-sky-100 shadow-sm hover:-translate-y-1 hover:shadow-xl transition duration-300">
+                <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-transparent" />
                 <div className="text-4xl font-bold text-sky-600 mb-2">ISO</div>
                 <div className="text-gray-700 font-semibold">9001:2015</div>
                 <div className="text-sm text-gray-500 mt-1">Certified</div>
               </Reveal>
-              <Reveal animation="fade-left" delay={150} className="bg-gray-100 p-8 text-center hover:shadow-xl transition duration-300">
+              <Reveal animation="fade-left" delay={150} className="group relative overflow-hidden bg-white p-8 text-center border border-sky-100 shadow-sm hover:-translate-y-1 hover:shadow-xl transition duration-300">
+                <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-transparent" />
                 <div className="text-4xl font-bold text-sky-600 mb-2">PCAB</div>
                 <div className="text-gray-700 font-semibold">AAA License</div>
                 <div className="text-sm text-gray-500 mt-1">Contractor</div>
@@ -91,8 +99,8 @@ export default async function HomePage() {
       </section>
 
       {/* Core Capabilities */}
-      <section className="py-24 md:py-32 bg-gray-50 w-full">
-        <div className="w-full px-8 md:px-16 lg:px-32">
+      <section className="relative py-24 md:py-32 bg-gray-50 w-full overflow-hidden">
+        <div className="relative z-10 w-full px-8 md:px-16 lg:px-32">
           <Reveal animation="fade-up" className="text-center max-w-4xl mx-auto mb-20">
             <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
               Our Expertise
@@ -128,9 +136,10 @@ export default async function HomePage() {
                 key={idx}
                 animation="fade-up"
                 delay={idx * 100}
-                className="bg-white p-8 hover:shadow-xl transition duration-300"
+                className="group relative overflow-hidden bg-white p-8 border border-transparent hover:border-sky-100 hover:-translate-y-1 hover:shadow-xl transition duration-300"
               >
-                <div className="w-16 h-1 bg-sky-600 mb-6"></div>
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-sky-500/0 via-sky-500/70 to-sky-500/0 opacity-0 group-hover:opacity-100 transition" />
+                <div className="w-16 h-1 bg-sky-600 mb-6 transition duration-300 group-hover:w-24"></div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900">
                   {service.title}
                 </h3>
@@ -142,7 +151,7 @@ export default async function HomePage() {
       </section>
 
       {/* Featured Projects */}
-      <section className="py-24 md:py-32 bg-white w-full">
+      <section className="relative py-24 md:py-32 bg-white w-full overflow-hidden">
         <div className="w-full px-8 md:px-16 lg:px-32">
           <Reveal animation="fade-up" className="flex justify-between items-end mb-16 flex-wrap gap-4 border-b border-gray-200 pb-6">
             <div>
@@ -161,8 +170,8 @@ export default async function HomePage() {
 
       {/* Partners Section */}
       {clients.length > 0 && (
-        <section className="py-24 md:py-32 bg-gray-50 w-full">
-          <div className="w-full px-8 md:px-16 lg:px-32">
+        <section className="relative py-24 md:py-32 bg-gray-50 w-full overflow-hidden">
+          <div className="relative z-10 w-full px-8 md:px-16 lg:px-32">
             <Reveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
                 Trusted by Industry Leaders
@@ -210,8 +219,8 @@ export default async function HomePage() {
       )}
 
       {/* CTA Section */}
-      <section className="py-24 bg-sky-700 w-full">
-        <Reveal animation="scale" className="w-full px-8 md:px-16 lg:px-32 text-center">
+      <section className="relative py-24 bg-sky-700 w-full overflow-hidden">
+        <Reveal animation="scale" className="relative z-10 w-full px-8 md:px-16 lg:px-32 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Start Your Project?
           </h2>

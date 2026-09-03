@@ -47,7 +47,7 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
             className="group cursor-pointer"
           >
             <div onClick={() => openModal(project)}>
-              <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3]">
+              <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3] shadow-sm ring-1 ring-sky-100/70 transition duration-500 group-hover:-translate-y-1 group-hover:shadow-2xl group-hover:ring-sky-300/70">
                 {project.image_url && (
                   <img
                     src={project.image_url}
@@ -55,7 +55,11 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
                     className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-sky-950/60 via-sky-900/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <div className="absolute inset-x-6 top-6 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent opacity-0 transition duration-500 group-hover:opacity-100"></div>
+                <div className="absolute bottom-5 left-5 translate-y-3 text-sm font-semibold tracking-wider text-white opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                  VIEW PROJECT
+                </div>
               </div>
               <div className="mt-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-sky-600 transition">

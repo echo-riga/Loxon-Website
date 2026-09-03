@@ -1,10 +1,12 @@
 // components/Footer.tsx
 import Link from 'next/link'
+import AmbientBackground from './AmbientBackground'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 w-full">
-      <div className="w-full px-8 md:px-16 lg:px-32 py-16 md:py-20">
+    <footer className="relative bg-gray-900 text-gray-300 w-full overflow-hidden">
+      <AmbientBackground variant="dark" blobCount={3} />
+      <div className="relative z-10 w-full px-8 md:px-16 lg:px-32 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div>
