@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { MessageCircle, X, Send } from 'lucide-react'
 import { sendChatMessage } from '@/lib/api'
 
@@ -15,6 +15,24 @@ const SUGGESTIONS = [
   'How can I contact you?',
   'What are your business hours?',
 ]
+
+function renderMessage(content: string): ReactNode[] {
+  const normalized = content.replace(/â€¢/g, '•')
+  const parts = normalized.split(/(\*\*[^*]+\*\*|\/(?:[a-z0-9-]+\/?)+)/gi)
+
+  return parts.map((part, index) => {
+    if (!part) return null
+    const boldMatch = part.match(/^\*\*(.+)\*\*$/)
+    const value = boldMatch ? boldMatch[1] : part
+    const routeMatch = value.match(/^\/(?:[a-z0-9-]+\/?)+$/i)
+
+    if (routeMatch) {
+      const href = value.endsWith('/') && value !== '/' ? value.slice(0, -1) : value
+      return <a key={index} href={href} className="font-semibold text-sky-700 underline decoration-sky-300 underline-offset-2 hover:text-sky-900">{value}</a>
+    }
+    return boldMatch ? <strong key={index}>{value}</strong> : <span key={index}>{value}</span>
+  })
+}
 
 const WELCOME_MESSAGE: Message = {
   role: 'assistant',
@@ -134,7 +152,7 @@ export default function Chatbot() {
                       : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm shadow-sm'
                   }`}
                 >
-                  {msg.content}
+                  {msg.role === 'assistant' ? renderMessage(msg.content) : msg.content}
                 </div>
               </div>
             ))}
@@ -198,3 +216,4 @@ export default function Chatbot() {
     </>
   )
 }
+

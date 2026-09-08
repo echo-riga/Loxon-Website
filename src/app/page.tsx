@@ -1,11 +1,11 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { getProjects, getOurCompany, getClients } from "@/lib/api";
 import FeaturedProjects from '@/components/FeaturedProjects';
 import HeroWithVideo from '@/components/HeroWithVideo';
 import Reveal from '@/components/Reveal';
 import CountUp from '@/components/CountUp';
 import Marquee from '@/components/Marquee';
-import Structure3DClient from '@/components/Structure3DClient';
+import CoreCapabilities from '@/components/CoreCapabilities';
 
 export default async function HomePage() {
   const [projects, company, clients] = await Promise.all([
@@ -15,41 +15,12 @@ export default async function HomePage() {
   ]);
 
   const featuredProjects = projects.slice(0, 3);
+  const businessPartners = clients.filter((client: any) => client.entity_type === 'partner');
 
   return (
     <>
       <HeroWithVideo />
-
-      {/* Company Stats - Projects Completed & Years Only */}
-      <section className="relative py-20 bg-white w-full border-b border-gray-200 overflow-hidden">
-        <div className="relative z-10 w-full px-8 md:px-16 lg:px-32">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.8fr)] lg:items-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <Reveal animation="fade-up" className="group relative overflow-hidden text-center py-12 bg-white/90 border border-sky-100 shadow-sm hover:shadow-xl transition duration-300">
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
-              <div className="text-7xl font-bold text-sky-600 mb-4">
-                <CountUp end={projects.length} suffix="+" />
-              </div>
-              <div className="text-2xl text-gray-800 font-semibold">
-                Projects Completed
-              </div>
-              <div className="text-gray-500 mt-2">Across the Philippines</div>
-              </Reveal>
-              <Reveal animation="fade-up" delay={150} className="group relative overflow-hidden text-center py-12 bg-white/90 border border-sky-100 shadow-sm hover:shadow-xl transition duration-300">
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
-              <div className="text-7xl font-bold text-sky-600 mb-4">
-                <CountUp end={43} suffix="+" />
-              </div>
-              <div className="text-2xl text-gray-800 font-semibold">
-                Years of Excellence
-              </div>
-              <div className="text-gray-500 mt-2">Since 1983</div>
-              </Reveal>
-            </div>
-            <Structure3DClient className="pointer-events-none hidden h-[300px] opacity-[0.28] lg:block" />
-          </div>
-        </div>
-      </section>
+      <CoreCapabilities />
 
       {/* About Section */}
       <section className="relative py-24 md:py-32 bg-white w-full overflow-hidden">
@@ -93,59 +64,18 @@ export default async function HomePage() {
                 <div className="text-gray-700 font-semibold">AAA License</div>
                 <div className="text-sm text-gray-500 mt-1">Contractor</div>
               </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Capabilities */}
-      <section className="relative py-24 md:py-32 bg-gray-50 w-full overflow-hidden">
-        <div className="relative z-10 w-full px-8 md:px-16 lg:px-32">
-          <Reveal animation="fade-up" className="text-center max-w-4xl mx-auto mb-20">
-            <span className="text-sky-600 text-base font-semibold tracking-wider uppercase mb-3 block">
-              Our Expertise
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-gray-900">
-              Core Capabilities
-            </h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              Comprehensive engineering and construction services tailored to
-              the Philippine landscape.
-            </p>
-          </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                title: "Structural Engineering",
-                desc: "Robust structural design for commercial and industrial buildings with seismic considerations.",
-              },
-              {
-                title: "Industrial Construction",
-                desc: "Full-scale industrial facilities and manufacturing plants built to international standards.",
-              },
-              {
-                title: "Infrastructure Development",
-                desc: "Bridges, highways, and public infrastructure projects that connect communities.",
-              },
-              {
-                title: "Project Management",
-                desc: "End-to-end construction management and supervision ensuring timely delivery.",
-              },
-            ].map((service, idx) => (
-              <Reveal
-                key={idx}
-                animation="fade-up"
-                delay={idx * 100}
-                className="group relative overflow-hidden bg-white p-8 border border-transparent hover:border-sky-100 hover:-translate-y-1 hover:shadow-xl transition duration-300"
-              >
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-sky-500/0 via-sky-500/70 to-sky-500/0 opacity-0 group-hover:opacity-100 transition" />
-                <div className="w-16 h-1 bg-sky-600 mb-6 transition duration-300 group-hover:w-24"></div>
-                <h3 className="text-2xl font-bold mb-4 text-gray-900">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">{service.desc}</p>
+              <Reveal animation="fade-left" delay={200} className="group relative overflow-hidden bg-white p-8 text-center border border-sky-100 shadow-sm hover:-translate-y-1 hover:shadow-xl transition duration-300">
+                <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-transparent" />
+                <div className="text-4xl font-bold text-sky-600 mb-2"><CountUp end={projects.length} suffix="+" /></div>
+                <div className="text-gray-700 font-semibold">Projects Completed</div>
+                <div className="text-sm text-gray-500 mt-1">Across the Philippines</div>
               </Reveal>
-            ))}
+              <Reveal animation="fade-left" delay={300} className="group relative overflow-hidden bg-white p-8 text-center border border-sky-100 shadow-sm hover:-translate-y-1 hover:shadow-xl transition duration-300">
+                <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-transparent" />
+                <div className="text-4xl font-bold text-sky-600 mb-2"><CountUp end={43} suffix="+" /></div>
+                <div className="text-gray-700 font-semibold">Years of Excellence</div>
+                <div className="text-sm text-gray-500 mt-1">Since 1983</div>
+              </Reveal>            </div>
           </div>
         </div>
       </section>
@@ -161,7 +91,7 @@ export default async function HomePage() {
             </div>
             <Link href="/projects" className="text-sky-600 font-semibold text-lg hover:text-sky-700 transition duration-300 inline-flex items-center group">
               VIEW ALL PROJECTS
-              <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
+              <span className="ml-1 transition-transform group-hover:translate-x-1">&rarr;</span>
             </Link>
           </Reveal>
           <FeaturedProjects projects={featuredProjects} />
@@ -169,7 +99,7 @@ export default async function HomePage() {
       </section>
 
       {/* Partners Section */}
-      {clients.length > 0 && (
+      {businessPartners.length > 0 && (
         <section className="relative py-24 md:py-32 bg-gray-50 w-full overflow-hidden">
           <div className="relative z-10 w-full px-8 md:px-16 lg:px-32">
             <Reveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-16">
@@ -186,7 +116,7 @@ export default async function HomePage() {
             </Reveal>
             <Reveal animation="fade-up" delay={200}>
               <Marquee speed={30} direction="left" pauseOnHover>
-                {clients.map((client: any) => (
+                {businessPartners.map((client: any) => (
                   <div
                     key={client.id}
                     className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 mx-4 w-64 shrink-0"
@@ -239,3 +169,6 @@ export default async function HomePage() {
     </>
   );
 }
+
+
+
