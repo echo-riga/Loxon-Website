@@ -1,5 +1,5 @@
-﻿import Link from "next/link";
-import { getProjects, getOurCompany, getClients } from "@/lib/api";
+import Link from "next/link";
+import { getProjects, getClients } from "@/lib/api";
 import FeaturedProjects from '@/components/FeaturedProjects';
 import HeroWithVideo from '@/components/HeroWithVideo';
 import Reveal from '@/components/Reveal';
@@ -8,9 +8,8 @@ import Marquee from '@/components/Marquee';
 import CoreCapabilities from '@/components/CoreCapabilities';
 
 export default async function HomePage() {
-  const [projects, company, clients] = await Promise.all([
+  const [projects, clients] = await Promise.all([
     getProjects(),
-    getOurCompany(),
     getClients(),
   ]);
 

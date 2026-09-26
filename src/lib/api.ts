@@ -10,11 +10,10 @@ async function request(path: string, options?: RequestInit) {
   return response.json()
 }
 
-export const getProjects = () => request('/api/projects', { cache: 'force-cache' })
-export const getProductsServices = () => request('/api/products-services', { cache: 'force-cache' })
-export const getClients = () => request('/api/clients', { cache: 'force-cache' })
-export const getOurCompany = () => request('/api/our-company', { cache: 'force-cache' })
-export const getJobs = () => request('/api/jobs', { cache: 'force-cache' })
+export const getProjects = () => request('/api/projects', { cache: 'no-store' })
+export const getProductsServices = () => request('/api/products-services', { cache: 'no-store' })
+export const getClients = () => request('/api/clients', { cache: 'no-store' })
+export const getJobs = () => request('/api/jobs', { cache: 'no-store' })
 
 export const submitContactForm = (data: ContactFormData) => request('/api/contact-submissions', {
   method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),

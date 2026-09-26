@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { submitContactForm } from '@/lib/api'
 
 interface FormData {
   firstName: string
@@ -29,6 +30,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({})
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {}
@@ -54,10 +56,30 @@ export default function ContactForm() {
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
-    // Replace with your actual form submission logic (e.g. API route, EmailJS, etc.)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setLoading(false)
-    setSubmitted(true)
+    setSubmitError('')
+
+    try {
+      const name = [formData.firstName.trim(), formData.lastName.trim()].filter(Boolean).join(' ')
+      const subject = formData.service
+        ? `${formData.service.replace(/\b\w/g, letter => letter.toUpperCase())} inquiry`
+        : 'Website inquiry'
+      const message = formData.phone.trim()
+        ? `${formData.message.trim()}\n\nPhone: ${formData.phone.trim()}`
+        : formData.message.trim()
+
+      await submitContactForm({
+        name,
+        email: formData.email.trim(),
+        subject,
+        message,
+        inquiryType: formData.service || 'sales',
+      })
+      setSubmitted(true)
+    } catch {
+      setSubmitError('Unable to send your message right now. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -207,6 +229,7 @@ export default function ContactForm() {
       </div>
 
       {/* Submit */}
+      {submitError && <p role="alert" style={errorStyle}>{submitError}</p>}
       <button
         type="submit"
         disabled={loading}

@@ -4,10 +4,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const capabilities = [
-  { label: 'Engineering', title: 'Structural Engineering', description: 'Robust structural design for commercial and industrial buildings with seismic considerations.', image: 'https://hoanglienson.com.vn/storage/unnamed-60.png', alt: 'Engineers coordinating structural work at a construction site' },
-  { label: 'Construction', title: 'Industrial Construction', description: 'Full-scale industrial facilities and manufacturing plants built to international standards.', image: 'https://www.economica.net/wp-content/uploads/2014/07/sumitomo_09594400.jpg', alt: 'Modern industrial manufacturing facility' },
-  { label: 'Infrastructure', title: 'Infrastructure Development', description: 'Bridges, highways, and public infrastructure projects that connect communities.', image: 'https://www.ulmaconstruction.ca/en-ca/projects/roads-and-bridges/cebu-cordova-link-expressway-philippines/gallery/cebu-cordova-expressway-filipinas-ulma-construction-1.jpg/%40%40images/image_large', alt: 'Bridge infrastructure under construction' },
-  { label: 'Management', title: 'Project Management', description: 'End-to-end construction management and supervision ensuring safe, timely delivery.', image: 'https://media.baumpub.com/files/slides/locale_image/full/0200/49904_en_5d711_49852_construction-site.jpg', alt: 'Construction managers reviewing a project at site' },
+  { label: 'Engineering', title: 'Structural Engineering', description: 'Robust structural design for commercial and industrial buildings with seismic considerations.', image: '/images/capabilities/structural-engineering.jpg', alt: 'Engineers coordinating structural work at a construction site' },
+  { label: 'Construction', title: 'Industrial Construction', description: 'Full-scale industrial facilities and manufacturing plants built to international standards.', image: '/images/capabilities/industrial-construction.jpg', alt: 'Modern industrial manufacturing facility' },
+  { label: 'Infrastructure', title: 'Infrastructure Development', description: 'Bridges, highways, and public infrastructure projects that connect communities.', image: '/images/capabilities/infrastructure-development.jpg', alt: 'Bridge infrastructure under construction' },
+  { label: 'Management', title: 'Project Management', description: 'End-to-end construction management and supervision ensuring safe, timely delivery.', image: '/images/capabilities/project-management.jpg', alt: 'Construction managers reviewing a project at site' },
 ]
 const DURATION = 6000
 

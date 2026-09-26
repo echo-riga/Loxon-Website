@@ -32,10 +32,9 @@ Guidelines:
 - Do not invent project names, service names, or facts not provided in the context below. If you don't have specific information, say so and direct the user to the contact info.`
 
   // Fetch live data in parallel (best-effort; failures degrade gracefully)
-  const [projectsRes, servicesRes, companyRes] = await Promise.allSettled([
+  const [projectsRes, servicesRes] = await Promise.allSettled([
     fetch(`${ADMIN_API_BASE}/api/projects`, { cache: 'no-store' }),
     fetch(`${ADMIN_API_BASE}/api/products-services`, { cache: 'no-store' }),
-    fetch(`${ADMIN_API_BASE}/api/our-company`, { cache: 'no-store' }),
   ])
 
   let projectsSection = ''
@@ -74,27 +73,7 @@ Guidelines:
     }
   }
 
-  let companySection = ''
-  if (companyRes.status === 'fulfilled' && companyRes.value.ok) {
-    try {
-      const company = await companyRes.value.json()
-      if (company && company.description) {
-        companySection = `\n\nCompany description: ${String(company.description).slice(0, 500)}`
-      }
-      if (company && Array.isArray(company.sections) && company.sections.length > 0) {
-        const secLines = company.sections
-          .filter((s: any) => s.title)
-          .map((s: any) => `- ${s.title}${s.description ? `: ${String(s.description).slice(0, 150)}` : ''}`)
-        if (secLines.length > 0) {
-          companySection += `\nCompany sections:\n${secLines.join('\n')}`
-        }
-      }
-    } catch {
-      // ignore parse errors
-    }
-  }
-
-  return `${baseInfo}${companySection}${servicesSection}${projectsSection}`
+  return `${baseInfo}${servicesSection}${projectsSection}`
 }
 
 export async function POST(request: Request) {
