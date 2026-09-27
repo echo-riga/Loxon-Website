@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { submitContactForm } from '@/lib/api'
+import { apiErrorMessage, submitContactForm } from '@/lib/api'
 import Reveal from '@/components/Reveal'
 
 export default function ContactPage() {
@@ -45,8 +45,8 @@ export default function ContactPage() {
         subject: '',
         message: '',
       })
-    } catch {
-      setSubmitStatus({ type: 'error', message: 'Something went wrong. Please try again.' })
+    } catch (error) {
+      setSubmitStatus({ type: 'error', message: apiErrorMessage(error, 'Something went wrong. Please try again.') })
     } finally {
       setIsSubmitting(false)
     }

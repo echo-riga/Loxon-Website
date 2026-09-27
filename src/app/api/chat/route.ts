@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
+import { applyChatRateLimits } from '@/lib/rate-limit'
 
-const ADMIN_API_BASE = 'https://loxon-admin.vercel.app'
+const ADMIN_API_BASE = process.env.NEXT_PUBLIC_ADMIN_API_BASE?.trim().replace(/\/$/, '') || ''
 
 // Fetch live company data from the admin API to build a context-rich system prompt.
 async function buildSystemPrompt(): Promise<string> {
@@ -32,13 +33,13 @@ Guidelines:
 - Do not invent project names, service names, or facts not provided in the context below. If you don't have specific information, say so and direct the user to the contact info.`
 
   // Fetch live data in parallel (best-effort; failures degrade gracefully)
-  const [projectsRes, servicesRes] = await Promise.allSettled([
-    fetch(`${ADMIN_API_BASE}/api/projects`, { cache: 'no-store' }),
-    fetch(`${ADMIN_API_BASE}/api/products-services`, { cache: 'no-store' }),
-  ])
+  const [projectsRes, servicesRes] = ADMIN_API_BASE ? await Promise.allSettled([
+    fetch(`${ADMIN_API_BASE}/api/projects`, { next: { revalidate: 60 } }),
+    fetch(`${ADMIN_API_BASE}/api/products-services`, { next: { revalidate: 60 } }),
+  ]) : [null, null]
 
   let projectsSection = ''
-  if (projectsRes.status === 'fulfilled' && projectsRes.value.ok) {
+  if (projectsRes?.status === 'fulfilled' && projectsRes.value.ok) {
     try {
       const projects = await projectsRes.value.json()
       if (Array.isArray(projects) && projects.length > 0) {
@@ -58,7 +59,7 @@ Guidelines:
   }
 
   let servicesSection = ''
-  if (servicesRes.status === 'fulfilled' && servicesRes.value.ok) {
+  if (servicesRes?.status === 'fulfilled' && servicesRes.value.ok) {
     try {
       const services = await servicesRes.value.json()
       if (Array.isArray(services) && services.length > 0) {
@@ -78,6 +79,8 @@ Guidelines:
 
 export async function POST(request: Request) {
   try {
+    const limited = await applyChatRateLimits(request)
+    if (limited) return limited
     const { messages } = await request.json()
 
     if (!Array.isArray(messages) || messages.length === 0) {

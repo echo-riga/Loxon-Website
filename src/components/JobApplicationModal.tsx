@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { submitJobApplication } from '@/lib/api'
+import { apiErrorMessage, submitJobApplication } from '@/lib/api'
 
 interface JobApplicationModalProps {
   isOpen: boolean
@@ -48,8 +48,8 @@ export default function JobApplicationModal({ isOpen, onClose, jobTitle, jobId }
         setSubmitted(false)
         setFormData({ full_name: '', email: '', phone: '', cover_letter: '', resume_url: '' })
       }, 2000)
-    } catch {
-      setError('Something went wrong. Please try again.')
+    } catch (cause) {
+      setError(apiErrorMessage(cause, 'Something went wrong. Please try again.'))
     } finally {
       setIsSubmitting(false)
     }

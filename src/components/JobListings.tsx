@@ -7,7 +7,7 @@ import Reveal from './Reveal'
 interface Job {
   id: number
   title: string
-  description: string
+  description: string | null
 }
 
 export default function JobListings({ jobs }: { jobs: Job[] }) {

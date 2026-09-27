@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { submitContactForm } from '@/lib/api'
+import { apiErrorMessage, submitContactForm } from '@/lib/api'
 
 interface FormData {
   firstName: string
@@ -72,11 +72,10 @@ export default function ContactForm() {
         email: formData.email.trim(),
         subject,
         message,
-        inquiryType: formData.service || 'sales',
       })
       setSubmitted(true)
-    } catch {
-      setSubmitError('Unable to send your message right now. Please try again.')
+    } catch (error) {
+      setSubmitError(apiErrorMessage(error, 'Unable to send your message right now. Please try again.'))
     } finally {
       setLoading(false)
     }

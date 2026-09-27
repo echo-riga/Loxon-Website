@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { MessageCircle, X, Send } from 'lucide-react'
-import { sendChatMessage } from '@/lib/api'
+import { apiErrorMessage, sendChatMessage } from '@/lib/api'
 
 type Message = {
   role: 'user' | 'assistant'
@@ -79,11 +79,12 @@ export default function Chatbot() {
         )
         const reply: Message = { role: 'assistant', content: data.reply }
         setMessages((prev) => [...prev, reply])
-      } catch {
+      } catch (error) {
         const errReply: Message = {
           role: 'assistant',
-          content:
+          content: apiErrorMessage(error,
             "I'm sorry, I'm having trouble responding right now. Please try again, or contact us directly at lpie@loxon.com.ph or +63 (2) 8470-3912 to 15.",
+          ),
         }
         setMessages((prev) => [...prev, errReply])
       } finally {
