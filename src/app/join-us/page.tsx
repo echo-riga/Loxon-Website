@@ -1,4 +1,5 @@
 import { getJobs } from '@/lib/api'
+import Image from 'next/image'
 import JobListings from '@/components/JobListings'
 import Reveal from '@/components/Reveal'
 
@@ -14,11 +15,7 @@ export default async function JoinUsPage() {
     <>
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80"
-          alt="Join our engineering team"
-          className="w-full h-full object-cover"
-        />
+        <Image src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80" alt="Join our engineering team" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center px-6 max-w-4xl">
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">

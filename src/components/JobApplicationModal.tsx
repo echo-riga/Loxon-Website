@@ -76,6 +76,7 @@ export default function JobApplicationModal({ isOpen, onClose, jobTitle, jobId }
                 <input
                   type="text"
                   name="full_name"
+                  maxLength={120}
                   required
                   value={formData.full_name}
                   onChange={handleChange}
@@ -87,6 +88,7 @@ export default function JobApplicationModal({ isOpen, onClose, jobTitle, jobId }
                 <input
                   type="email"
                   name="email"
+                  maxLength={254}
                   required
                   value={formData.email}
                   onChange={handleChange}
@@ -98,6 +100,7 @@ export default function JobApplicationModal({ isOpen, onClose, jobTitle, jobId }
                 <input
                   type="tel"
                   name="phone"
+                  maxLength={40}
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-sky-500 focus:border-sky-500"
@@ -108,6 +111,7 @@ export default function JobApplicationModal({ isOpen, onClose, jobTitle, jobId }
                 <textarea
                   name="cover_letter"
                   rows={4}
+                  maxLength={10000}
                   value={formData.cover_letter}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-sky-500 focus:border-sky-500"
@@ -118,6 +122,7 @@ export default function JobApplicationModal({ isOpen, onClose, jobTitle, jobId }
                 <input
                   type="url"
                   name="resume_url"
+                  maxLength={2048}
                   value={formData.resume_url}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-sky-500 focus:border-sky-500"

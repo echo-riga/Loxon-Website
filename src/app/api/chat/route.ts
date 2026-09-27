@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { applyChatRateLimits } from '@/lib/rate-limit'
+import { chatValidationResponse, readChatMessages } from '@/lib/chat-validation'
 
 const ADMIN_API_BASE = process.env.NEXT_PUBLIC_ADMIN_API_BASE?.trim().replace(/\/$/, '') || ''
 
@@ -33,22 +34,25 @@ Guidelines:
 - Do not invent project names, service names, or facts not provided in the context below. If you don't have specific information, say so and direct the user to the contact info.`
 
   // Fetch live data in parallel (best-effort; failures degrade gracefully)
-  const [projectsRes, servicesRes] = ADMIN_API_BASE ? await Promise.allSettled([
+  const [projectsRes, servicesRes, jobsRes, clientsRes] = ADMIN_API_BASE ? await Promise.allSettled([
     fetch(`${ADMIN_API_BASE}/api/projects`, { next: { revalidate: 60 } }),
     fetch(`${ADMIN_API_BASE}/api/products-services`, { next: { revalidate: 60 } }),
-  ]) : [null, null]
+    fetch(`${ADMIN_API_BASE}/api/jobs`, { next: { revalidate: 60 } }),
+    fetch(`${ADMIN_API_BASE}/api/clients`, { next: { revalidate: 60 } }),
+  ]) : [null, null, null, null]
 
   let projectsSection = ''
   if (projectsRes?.status === 'fulfilled' && projectsRes.value.ok) {
     try {
       const projects = await projectsRes.value.json()
       if (Array.isArray(projects) && projects.length > 0) {
-        const lines = projects.slice(0, 30).map((p: any) => {
+        const lines = projects.map((p: any) => {
           const parts = [p.title]
           if (p.project_type) parts.push(`Type: ${p.project_type}`)
           if (p.location) parts.push(`Location: ${p.location}`)
           if (p.constructed_date) parts.push(`Year: ${String(p.constructed_date).slice(0, 4)}`)
           if (p.client_name) parts.push(`Client: ${p.client_name}`)
+          if (p.description) parts.push(`Description: ${String(p.description).slice(0, 1_200)}`)
           return `- ${parts.join(' | ')}`
         })
         projectsSection = `\n\nNotable projects (from our database):\n${lines.join('\n')}`
@@ -74,18 +78,43 @@ Guidelines:
     }
   }
 
-  return `${baseInfo}${servicesSection}${projectsSection}`
+  let jobsSection = ''
+  if (jobsRes?.status === 'fulfilled' && jobsRes.value.ok) {
+    try {
+      const jobs = await jobsRes.value.json()
+      if (Array.isArray(jobs) && jobs.length > 0) {
+        jobsSection = `\n\nCurrent job openings:\n${jobs.map((job: any) => `- ${job.title}${job.description ? ` — ${String(job.description).slice(0, 1_200)}` : ''}`).join('\n')}`
+      }
+    } catch {
+      // Ignore malformed optional context.
+    }
+  }
+
+  let clientsSection = ''
+  if (clientsRes?.status === 'fulfilled' && clientsRes.value.ok) {
+    try {
+      const clients = await clientsRes.value.json()
+      if (Array.isArray(clients) && clients.length > 0) {
+        const groups = { partner: [] as string[], membership: [] as string[] }
+        for (const client of clients) {
+          const type = client.entity_type === 'membership' ? 'membership' : 'partner'
+          groups[type].push(`- ${client.title}${client.description ? ` — ${String(client.description).slice(0, 600)}` : ''}`)
+        }
+        clientsSection = `\n\nClients and partners:\n${groups.partner.join('\n') || '- None listed'}\n\nMemberships:\n${groups.membership.join('\n') || '- None listed'}`
+      }
+    } catch {
+      // Ignore malformed optional context.
+    }
+  }
+
+  return `${baseInfo}${servicesSection}${projectsSection}${jobsSection}${clientsSection}`
 }
 
 export async function POST(request: Request) {
   try {
     const limited = await applyChatRateLimits(request)
     if (limited) return limited
-    const { messages } = await request.json()
-
-    if (!Array.isArray(messages) || messages.length === 0) {
-      return NextResponse.json({ error: 'Messages array is required' }, { status: 400 })
-    }
+    const messages = await readChatMessages(request)
 
     const apiKey = process.env.GROQ_API_KEY
     if (!apiKey) {
@@ -117,8 +146,7 @@ export async function POST(request: Request) {
     })
 
     if (!groqRes.ok) {
-      const errText = await groqRes.text()
-      console.error('Groq API error:', groqRes.status, errText)
+      console.error('Groq API error:', groqRes.status)
       return NextResponse.json({ error: 'Failed to get a response from the assistant' }, { status: 502 })
     }
 
@@ -127,6 +155,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ reply })
   } catch (error) {
+    const invalid = chatValidationResponse(error)
+    if (invalid) return invalid
     console.error('Chat API error:', error)
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }

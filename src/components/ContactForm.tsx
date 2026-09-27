@@ -149,7 +149,7 @@ export default function ContactForm() {
         <div>
           <label style={labelStyle} htmlFor="firstName">First Name *</label>
           <input
-            id="firstName" name="firstName" type="text"
+            id="firstName" name="firstName" type="text" maxLength={60}
             placeholder="Juan"
             value={formData.firstName}
             onChange={handleChange}
@@ -160,7 +160,7 @@ export default function ContactForm() {
         <div>
           <label style={labelStyle} htmlFor="lastName">Last Name</label>
           <input
-            id="lastName" name="lastName" type="text"
+            id="lastName" name="lastName" type="text" maxLength={59}
             placeholder="dela Cruz"
             value={formData.lastName}
             onChange={handleChange}
@@ -173,7 +173,7 @@ export default function ContactForm() {
       <div>
         <label style={labelStyle} htmlFor="email">Email Address *</label>
         <input
-          id="email" name="email" type="email"
+          id="email" name="email" type="email" maxLength={254}
           placeholder="you@example.com"
           value={formData.email}
           onChange={handleChange}
@@ -186,7 +186,7 @@ export default function ContactForm() {
       <div>
         <label style={labelStyle} htmlFor="phone">Phone Number</label>
         <input
-          id="phone" name="phone" type="tel"
+          id="phone" name="phone" type="tel" maxLength={40}
           placeholder="+63 9XX XXX XXXX"
           value={formData.phone}
           onChange={handleChange}
@@ -217,7 +217,7 @@ export default function ContactForm() {
       <div>
         <label style={labelStyle} htmlFor="message">Message *</label>
         <textarea
-          id="message" name="message"
+          id="message" name="message" maxLength={4900}
           placeholder="Tell us about your project..."
           rows={5}
           value={formData.message}

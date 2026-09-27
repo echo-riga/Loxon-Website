@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 interface HoverImageProps {
   src: string
   alt: string
@@ -7,7 +9,7 @@ interface HoverImageProps {
 
 export default function HoverImage({ src, alt }: HoverImageProps) {
   return (
-    <img
+    <Image width={1600} height={900} sizes="100vw"
       src={src}
       alt={alt}
       style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}

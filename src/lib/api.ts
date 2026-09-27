@@ -55,6 +55,9 @@ export function apiErrorMessage(error: unknown, fallback: string) {
     const wait = error.retryAfter ? ` Try again in about ${Math.ceil(error.retryAfter / 60)} minute(s).` : ''
     return `Too many requests.${wait}`
   }
+  if (error instanceof ApiRequestError && (error.status === 400 || error.status === 413)) {
+    return error.message
+  }
   return fallback
 }
 

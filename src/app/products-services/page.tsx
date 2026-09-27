@@ -1,4 +1,5 @@
 import { getProductsServices } from '@/lib/api'
+import Image from 'next/image'
 import Reveal from '@/components/Reveal'
 
 export const metadata = {
@@ -13,11 +14,7 @@ export default async function ProductsServicesPage() {
     <>
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
-        <img
-      src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600&q=80"
-alt="Engineering products and services"
-          className="w-full h-full object-cover"
-        />
+        <Image src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600&q=80" alt="Engineering products and services" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center px-6 max-w-4xl">
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
@@ -41,7 +38,7 @@ alt="Engineering products and services"
                 className="bg-gray-50 overflow-hidden shadow-md hover:shadow-xl transition duration-500"
               >
                 {item.image_url && (
-                  <img src={item.image_url} alt={item.title} className="w-full h-64 object-cover" />
+                  <Image src={item.image_url} alt={item.title} width={900} height={500} sizes="(min-width: 768px) 50vw, 100vw" className="h-64 w-full object-cover" />
                 )}
                 <div className="p-8">
                   <h2 className="text-2xl font-bold mb-3 text-gray-900">{item.title}</h2>

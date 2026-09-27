@@ -1,5 +1,6 @@
 // components/Footer.tsx
 import Link from 'next/link'
+import Image from 'next/image'
 import AmbientBackground from './AmbientBackground'
 
 export default function Footer() {
@@ -11,7 +12,7 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/loxon-logo.png" alt="Loxon Logo" className="w-10 h-10 object-contain" />
+              <Image src="/loxon-logo.png" alt="Loxon Logo" width={40} height={40} className="h-10 w-10 object-contain" />
               <span className="text-xl font-bold text-white">
                 Loxon Philippines, Inc.
               </span>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Reveal from './Reveal'
 
 interface ProjectImage {
@@ -49,11 +50,7 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
             <div onClick={() => openModal(project)}>
               <div className="relative overflow-hidden bg-gray-100 rounded-2xl aspect-[4/3] shadow-sm ring-1 ring-sky-100/70 transition duration-500 group-hover:-translate-y-1 group-hover:shadow-2xl group-hover:ring-sky-300/70">
                 {project.image_url && (
-                  <img
-                    src={project.image_url}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
-                  />
+                  <Image src={project.image_url} alt={project.title} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-105" />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-sky-950/60 via-sky-900/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
                 <div className="absolute inset-x-6 top-6 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent opacity-0 transition duration-500 group-hover:opacity-100"></div>
@@ -83,7 +80,7 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
             <div className="relative aspect-video bg-gray-100">
               {selectedProject.images?.length > 0 ? (
                 <>
-                  <img src={selectedProject.images[currentImageIndex].image_url} alt="" className="w-full h-full object-contain" />
+                  <Image src={selectedProject.images[currentImageIndex].image_url} alt={selectedProject.images[currentImageIndex].caption || selectedProject.title} fill sizes="(min-width: 1024px) 960px, 100vw" className="object-contain" />
                   <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 w-10 h-10">‹</button>
                   <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 w-10 h-10">›</button>
                   <div className="absolute bottom-4 left-0 right-0 text-center text-white bg-black/50 py-2 text-sm">

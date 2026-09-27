@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { apiErrorMessage, submitContactForm } from '@/lib/api'
 import Reveal from '@/components/Reveal'
@@ -56,11 +57,7 @@ export default function ContactPage() {
     <>
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
-        <img
-          src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.png"
-          alt="Contact Loxon Philippines"
-          className="w-full h-full object-cover"
-        />
+        <Image src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.png" alt="Contact Loxon Philippines" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center px-6 max-w-4xl">
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
@@ -128,6 +125,7 @@ export default function ContactPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                   <input
                     type="text"
+                    maxLength={120}
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -138,6 +136,7 @@ export default function ContactPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
                   <input
                     type="email"
+                    maxLength={254}
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -149,6 +148,7 @@ export default function ContactPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
                   <input
                     type="text"
+                    maxLength={200}
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
@@ -159,6 +159,7 @@ export default function ContactPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Message *</label>
                   <textarea
                     rows={5}
+                    maxLength={5000}
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}

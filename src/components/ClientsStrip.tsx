@@ -1,6 +1,7 @@
 'use client'
 
 import type { Client } from '@/types/loxon'
+import Image from 'next/image'
 import Marquee from './Marquee'
 
 export default function ClientsStrip({ clients }: { clients: Client[] }) {
@@ -14,9 +15,12 @@ export default function ClientsStrip({ clients }: { clients: Client[] }) {
           className="flex flex-col items-center gap-2 mx-8 sm:mx-12 opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-default"
         >
           {c.image_url ? (
-            <img
+            <Image
               src={c.image_url}
               alt={c.title}
+              width={160}
+              height={64}
+              sizes={'160px'}
               className="h-12 sm:h-16 object-contain"
               style={{ filter: 'grayscale(1)' }}
             />

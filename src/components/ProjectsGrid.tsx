@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import Image from 'next/image'
 import Reveal from './Reveal'
 
 interface ProjectImage {
@@ -28,7 +29,7 @@ const AUTO_ROTATE_MS = 5000
 const fmtFullDate = (val: string | null): string => {
   if (!val) return '—'
   const d = new Date(val)
-  if (isNaN(d.getTime())) return val
+  if (isNaN(d.getTime())) return '—'
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
@@ -124,11 +125,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
     <>
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80"
-          alt="Construction project site"
-          className="w-full h-full object-cover"
-        />
+        <Image src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80" alt="Construction project site" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center px-6 max-w-4xl">
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
@@ -237,11 +234,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
             >
               {modalImages.length > 0 ? (
                 <>
-                  <img
-                    src={modalImages[currentImageIndex]?.image_url}
-                    alt={modalImages[currentImageIndex]?.caption || selectedProject.title}
-                    className="w-full h-full object-contain max-h-[60vh]"
-                  />
+                  <Image src={modalImages[currentImageIndex]?.image_url} alt={modalImages[currentImageIndex]?.caption || selectedProject.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-contain" />
                   {/* Prev arrow */}
                   {modalImages.length > 1 && (
                     <button

@@ -1,4 +1,5 @@
 import { getClients } from '@/lib/api'
+import Image from 'next/image'
 import Reveal from '@/components/Reveal'
 
 export const metadata = {
@@ -15,11 +16,7 @@ export default async function CompanyMembershipPage() {
   return (
     <>
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&q=80"
-          alt="Business partners and memberships"
-          className="w-full h-full object-cover"
-        />
+        <Image src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&q=80" alt="Business partners and memberships" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="text-center px-6 max-w-4xl">
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
@@ -51,11 +48,7 @@ export default async function CompanyMembershipPage() {
                     {client.image_url && (
                       <div className="flex justify-center mb-5">
                         <div className="w-40 h-40 flex items-center justify-center bg-white rounded-lg p-2">
-                          <img
-                            src={client.image_url}
-                            alt={client.title}
-                            className="max-w-full max-h-full object-contain"
-                          />
+                          <Image src={client.image_url} alt={client.title} width={160} height={160} sizes="160px" className="max-h-full max-w-full object-contain" />
                         </div>
                       </div>
                     )}
@@ -94,11 +87,7 @@ export default async function CompanyMembershipPage() {
                     {client.image_url && (
                       <div className="flex justify-center mb-5">
                         <div className="w-40 h-40 flex items-center justify-center bg-white rounded-lg p-2">
-                          <img
-                            src={client.image_url}
-                            alt={client.title}
-                            className="max-w-full max-h-full object-contain"
-                          />
+                          <Image src={client.image_url} alt={client.title} width={160} height={160} sizes="160px" className="max-h-full max-w-full object-contain" />
                         </div>
                       </div>
                     )}

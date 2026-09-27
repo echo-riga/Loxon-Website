@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getProjects, getClients } from "@/lib/api";
 import FeaturedProjects from '@/components/FeaturedProjects';
 import HeroWithVideo from '@/components/HeroWithVideo';
@@ -122,10 +123,13 @@ export default async function HomePage() {
                   >
                     <div className="h-32 w-full flex items-center justify-center mb-4">
                       {client.image_url ? (
-                        <img
+                        <Image
                           src={client.image_url}
                           alt={client.title}
-                          className="max-h-24 max-w-full object-contain transition duration-300 group-hover:scale-110"
+                          width={240}
+                          height={96}
+                          sizes="(min-width: 1024px) 20vw, 50vw"
+                          className="max-h-24 w-auto max-w-full object-contain transition duration-300 group-hover:scale-110"
                         />
                       ) : (
                         <div className="h-24 w-full flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-sky-50 transition">
