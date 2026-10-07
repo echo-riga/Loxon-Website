@@ -19,19 +19,20 @@ export default function HeroWithVideo() {
       </video>
 
       {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-slate-950/64 to-black/45" />
+      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/40 to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 w-full px-6 sm:px-8 md:px-16 lg:px-32 animate-fade-in-up">
         <div className="max-w-5xl mx-auto md:mx-0">
-          <span className="text-sky-400 text-base sm:text-lg md:text-xl font-semibold tracking-wider mb-3 sm:mb-4 block">
+          <span className="text-sky-200 text-base sm:text-lg md:text-xl font-semibold tracking-wider mb-3 sm:mb-4 block">
             ESTABLISHED 1983
           </span>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 text-white leading-tight [text-shadow:0_2px_8px_rgba(0,0,0,0.5)]">
             Engineering the<br />
-            <span className="text-sky-400">Philippines' Future</span>
+            <span className="text-sky-200">Philippines' Future</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 md:mb-10 max-w-3xl leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 mb-6 sm:mb-8 md:mb-10 max-w-3xl leading-relaxed">
             Loxon Philippines Inc. delivers world-class engineering and
             construction solutions from infrastructure to industrial projects
             with unwavering quality and safety.
@@ -40,7 +41,7 @@ export default function HeroWithVideo() {
             <Link href="/projects" className="bg-sky-600 hover:bg-sky-700 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
               VIEW OUR WORK
             </Link>
-            <Link href="/contact?type=sales" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
+            <Link href="/contact?type=sales" className="border-2 border-white bg-slate-950/40 text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
               SALES INQUIRY
             </Link>
           </div>

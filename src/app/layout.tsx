@@ -6,21 +6,23 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
 import Chatbot from '@/components/Chatbot'
+import { siteUrl, siteName } from '@/lib/seo'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://loxon-ph.vercel.app'),
+  metadataBase: new URL(siteUrl),
   title: 'Loxon Philippines Inc. | Engineering & Construction Excellence',
   description: 'Loxon Philippines Inc. is a premier engineering and construction company delivering infrastructure, industrial, and civil engineering projects across the Philippines.',
   keywords: 'engineering, construction, Philippines, infrastructure, civil engineering, industrial construction',
   authors: [{ name: 'Loxon Philippines Inc.' }],
+  robots: { index: true, follow: true },
   openGraph: {
     title: 'Loxon Philippines Inc. | Engineering & Construction Excellence',
     description: 'Premier engineering and construction company in the Philippines.',
     type: 'website',
     locale: 'en_PH',
-    url: 'https://loxon-ph.vercel.app',
+    url: siteUrl,
     siteName: 'Loxon Philippines',
   },
   twitter: {
@@ -38,20 +40,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // JSON‑LD structured data
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "EngineeringCompany",
-    "name": "Loxon Philippines Inc.",
-    "url": "https://loxon-ph.vercel.app",
-    "logo": "https://loxon-ph.vercel.app/loxon-logo.png",
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    "name": siteName,
+    "url": `${siteUrl}/`,
+    "logo": `${siteUrl}/loxon-logo.png`,
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "23rd Floor, One Corporate Centre, Meralco Ave",
+      "streetAddress": "LPI Centre, 324 Capt. Henry Javier St., Oranbo",
       "addressLocality": "Pasig City",
       "addressRegion": "Metro Manila",
       "addressCountry": "PH"
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+63281234567",
+      "telephone": "+63 (2) 8470-3912",
+      "email": "lpie@loxon.com.ph",
       "contactType": "customer service"
     }
   }
@@ -63,10 +67,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="shortcut icon" href="/loxon-logo.png" type="image/png" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
         />
       </head>
       <body className="font-sans bg-white text-gray-900">
+        <noscript><style>{'.reveal-hidden { opacity: 1 !important; transform: none !important; filter: none !important; }'}</style></noscript>
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />

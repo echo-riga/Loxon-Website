@@ -1,11 +1,9 @@
 // app/our-company/page.tsx
 import Reveal from '@/components/Reveal'
 import Image from 'next/image'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Our Company | Loxon Philippines Inc.',
-  description: 'Learn about our vision, mission, values, and engineering leadership.',
-}
+export const metadata = pageMetadata('/our-company', 'Our Company | Loxon Philippines Inc.', 'Learn about our vision, mission, values, and engineering leadership.')
 
 export default function OurCompanyPage() {
   return (
@@ -205,7 +203,7 @@ export default function OurCompanyPage() {
             <div className="h-64 w-full rounded-xl overflow-hidden mt-8">
               <iframe
                 title="Office Location Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.4343!2d121.055!3d14.590!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c7f6b2d8c6c9%3A0x5b8f3e2d1c4a7e9!2sOne%20Corporate%20Centre!5e0!3m2!1sen!2sph!4v1700000000000!5m2!1sen!2sph"
+                src="https://www.google.com/maps?cid=8875550432114180768&ll=14.574255,121.0670306&z=16&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

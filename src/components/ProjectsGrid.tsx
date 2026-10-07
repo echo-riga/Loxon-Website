@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Reveal from './Reveal'
+import CollectionStatus from './CollectionStatus'
+import { getProjects, type ProjectWithImages } from '@/lib/api'
+import { useCollection } from '@/lib/use-collection'
 
 interface ProjectImage {
   id: number
@@ -41,20 +44,23 @@ const fmtYear = (val: string | null): string => {
   return String(d.getFullYear())
 }
 
-export default function ProjectsGrid({ projects }: { projects: Project[] }) {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+export default function ProjectsGrid({ initialProjects }: { initialProjects: ProjectWithImages[] }) {
+  const content = useCollection(getProjects, initialProjects)
+  const projects = content.data
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
+  const selectedProject = projects.find(project => project.id === selectedProjectId) ?? null
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const openModal = (project: Project) => {
-    setSelectedProject(project)
+    setSelectedProjectId(project.id)
     setCurrentImageIndex(0)
     setIsPaused(false)
   }
 
   const closeModal = () => {
-    setSelectedProject(null)
+    setSelectedProjectId(null)
     if (timerRef.current) {
       clearInterval(timerRef.current)
       timerRef.current = null
@@ -120,6 +126,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
         ? [{ image_url: selectedProject.image_url, caption: null }]
         : []
     : []
+  const visibleImageIndex = currentImageIndex % Math.max(modalImages.length, 1)
 
   return (
     <>
@@ -141,6 +148,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
       {/* Projects Table */}
       <section className="py-24 md:py-32 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
+          <CollectionStatus {...content} />
           {projects.length > 0 ? (
             <Reveal animation="fade-up">
               <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
@@ -199,11 +207,11 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
                 </table>
               </div>
             </Reveal>
-          ) : (
+          ) : !content.loading && !content.error ? (
             <div className="text-center py-20">
               <p className="text-gray-500 text-xl">No projects available at this time.</p>
             </div>
-          )}
+          ) : null}
         </div>
       </section>
 
@@ -234,7 +242,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
             >
               {modalImages.length > 0 ? (
                 <>
-                  <Image src={modalImages[currentImageIndex]?.image_url} alt={modalImages[currentImageIndex]?.caption || selectedProject.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-contain" />
+                  <Image src={modalImages[visibleImageIndex].image_url} alt={modalImages[visibleImageIndex].caption || selectedProject.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-contain" />
                   {/* Prev arrow */}
                   {modalImages.length > 1 && (
                     <button
@@ -258,10 +266,10 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
                   {/* Caption & counter */}
                   {modalImages.length > 1 && (
                     <div className="absolute bottom-0 left-0 right-0 text-center text-white bg-black/60 py-2 text-sm">
-                      {modalImages[currentImageIndex]?.caption && (
-                        <span>{modalImages[currentImageIndex].caption} &nbsp;|&nbsp; </span>
+                      {modalImages[visibleImageIndex].caption && (
+                        <span>{modalImages[visibleImageIndex].caption} &nbsp;|&nbsp; </span>
                       )}
-                      {currentImageIndex + 1} / {modalImages.length}
+                      {visibleImageIndex + 1} / {modalImages.length}
                     </div>
                   )}
                 </>

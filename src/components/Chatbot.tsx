@@ -16,7 +16,7 @@ const SUGGESTIONS = [
   'What are your business hours?',
 ]
 
-function renderMessage(content: string): ReactNode[] {
+function renderInline(content: string): ReactNode[] {
   const normalized = content.replace(/â€¢/g, '•')
   const parts = normalized.split(/(\*\*[^*]+\*\*|\/(?:[a-z0-9-]+\/?)+)/gi)
 
@@ -32,6 +32,52 @@ function renderMessage(content: string): ReactNode[] {
     }
     return boldMatch ? <strong key={index}>{value}</strong> : <span key={index}>{value}</span>
   })
+}
+
+function renderMessage(content: string): ReactNode {
+  const lines = content.replace(/\r\n?/g, '\n').split('\n')
+  const blocks: ReactNode[] = []
+  let paragraph: string[] = []
+  let items: string[] = []
+  let ordered = false
+
+  const flushParagraph = () => {
+    if (!paragraph.length) return
+    blocks.push(<p key={blocks.length}>{renderInline(paragraph.join(' '))}</p>)
+    paragraph = []
+  }
+  const flushList = () => {
+    if (!items.length) return
+    const List = ordered ? 'ol' : 'ul'
+    blocks.push(
+      <List key={blocks.length} className={`${ordered ? 'list-decimal' : 'list-disc'} pl-5 space-y-1 marker:text-sky-600`}>
+        {items.map((item, index) => <li key={index} className="pl-0.5">{renderInline(item)}</li>)}
+      </List>
+    )
+    items = []
+  }
+
+  for (const rawLine of lines) {
+    // Keep a readable gap after labels, even when the AI omits it.
+    const line = rawLine.trim().replace(/(\*\*[^*]+:\*\*|\*\*[^*]+\*\*:)(?=\S)/g, '$1 ')
+    const bullet = line.match(/^(?:[-*•]|â€¢)\s+(.+)$/)
+    const numbered = line.match(/^\d+[.)]\s+(.+)$/)
+    if (bullet || numbered) {
+      flushParagraph()
+      if (items.length && ordered !== Boolean(numbered)) flushList()
+      ordered = Boolean(numbered)
+      items.push((bullet || numbered)![1])
+    } else if (!line) {
+      flushParagraph()
+      // Blank lines between list items do not split the list.
+    } else {
+      flushList()
+      paragraph.push(line)
+    }
+  }
+  flushParagraph()
+  flushList()
+  return <div className="space-y-3">{blocks}</div>
 }
 
 const WELCOME_MESSAGE: Message = {
@@ -147,10 +193,10 @@ export default function Chatbot() {
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
+                  className={`min-w-0 px-4 py-2.5 rounded-2xl text-sm leading-relaxed [overflow-wrap:anywhere] ${
                     msg.role === 'user'
-                      ? 'bg-sky-600 text-white rounded-br-sm'
-                      : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm shadow-sm'
+                      ? 'max-w-[85%] whitespace-pre-wrap bg-sky-600 text-white rounded-br-sm'
+                      : 'max-w-[95%] bg-white text-gray-800 border border-gray-200 rounded-bl-sm shadow-sm'
                   }`}
                 >
                   {msg.role === 'assistant' ? renderMessage(msg.content) : msg.content}

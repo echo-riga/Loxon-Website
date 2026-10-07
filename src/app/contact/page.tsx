@@ -1,15 +1,32 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { apiErrorMessage, submitContactForm } from '@/lib/api'
 import Reveal from '@/components/Reveal'
 
-export default function ContactPage() {
+function SalesScroll() {
   const searchParams = useSearchParams()
   const typeParam = searchParams.get('type')
 
+  // Scroll to contact form when URL contains ?type=sales
+  useEffect(() => {
+    if (typeParam === 'sales') {
+      const formElement = document.getElementById('contact-form')
+      if (formElement) {
+        // Small delay to ensure the page has fully rendered
+        const timer = setTimeout(() => {
+          formElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 200)
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [typeParam])
+  return null
+}
+
+export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,19 +35,6 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
-
-  // Scroll to contact form when URL contains ?type=sales
-  useEffect(() => {
-    if (typeParam === 'sales') {
-      const formElement = document.getElementById('contact-form')
-      if (formElement) {
-        // Small delay to ensure the page has fully rendered
-        setTimeout(() => {
-          formElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }, 200)
-      }
-    }
-  }, [typeParam])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,6 +59,7 @@ export default function ContactPage() {
 
   return (
     <>
+      <Suspense fallback={null}><SalesScroll /></Suspense>
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
         <Image src="https://loxon.com.ph/wp-content/uploads/2020/01/1048-1.png" alt="Contact Loxon Philippines" fill priority sizes="100vw" className="object-cover" />

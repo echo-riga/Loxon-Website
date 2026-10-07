@@ -25,17 +25,24 @@ interface Project {
 }
 
 export default function FeaturedProjects({ projects }: { projects: Project[] }) {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
+  const selectedProject = projects.find(project => project.id === selectedProjectId) ?? null
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const openModal = (project: Project) => {
-    setSelectedProject(project)
+    setSelectedProjectId(project.id)
     setCurrentImageIndex(0)
   }
 
-  const closeModal = () => setSelectedProject(null)
-  const nextImage = () => setCurrentImageIndex((i) => (i + 1) % (selectedProject?.images.length ?? 1))
-  const prevImage = () => setCurrentImageIndex((i) => (i - 1 + (selectedProject?.images.length ?? 1)) % (selectedProject?.images.length ?? 1))
+  const closeModal = () => setSelectedProjectId(null)
+  const modalImages = selectedProject?.images.length
+    ? selectedProject.images
+    : selectedProject?.image_url
+      ? [{ image_url: selectedProject.image_url, caption: null }]
+      : []
+  const visibleImageIndex = currentImageIndex % Math.max(modalImages.length, 1)
+  const nextImage = () => setCurrentImageIndex((i) => (i + 1) % Math.max(modalImages.length, 1))
+  const prevImage = () => setCurrentImageIndex((i) => (i - 1 + modalImages.length) % Math.max(modalImages.length, 1))
 
   return (
     <>
@@ -78,17 +85,19 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
             </div>
             <div className="relative aspect-video bg-gray-100">
-              {selectedProject.images?.length > 0 ? (
+              {modalImages.length > 0 ? (
                 <>
-                  <Image src={selectedProject.images[currentImageIndex].image_url} alt={selectedProject.images[currentImageIndex].caption || selectedProject.title} fill sizes="(min-width: 1024px) 960px, 100vw" className="object-contain" />
+                  <Image src={modalImages[visibleImageIndex].image_url} alt={modalImages[visibleImageIndex].caption || selectedProject.title} fill sizes="(min-width: 1024px) 960px, 100vw" className="object-contain" />
+                  {modalImages.length > 1 && <>
                   <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 w-10 h-10">‹</button>
                   <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 w-10 h-10">›</button>
+                  </>}
                   <div className="absolute bottom-4 left-0 right-0 text-center text-white bg-black/50 py-2 text-sm">
-                    {selectedProject.images[currentImageIndex].caption && <span>{selectedProject.images[currentImageIndex].caption} | </span>}
-                    {currentImageIndex + 1} / {selectedProject.images.length}
+                    {modalImages[visibleImageIndex].caption && <span>{modalImages[visibleImageIndex].caption} | </span>}
+                    {visibleImageIndex + 1} / {modalImages.length}
                   </div>
                 </>
-              ) : <div className="flex items-center justify-center h-full text-gray-500">No sub‑images</div>}
+              ) : <div className="flex items-center justify-center h-full text-gray-500">No images available for this project.</div>}
             </div>
           </div>
         </div>

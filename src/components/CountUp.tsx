@@ -20,29 +20,29 @@ export default function CountUp({
   className = '',
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const [value, setValue] = useState(0)
-  const [hasAnimated, setHasAnimated] = useState(false)
+  const [value, setValue] = useState(end)
 
   useEffect(() => {
     const node = ref.current
     if (!node) return
+    let cancelled = false
+    let frame = 0
 
     // Respect reduced-motion: show final value immediately
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) {
       setValue(end)
-      setHasAnimated(true)
       return
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setHasAnimated(true)
+          if (entry.isIntersecting) {
             const start = performance.now()
 
             const tick = (now: number) => {
+              if (cancelled) return
               const elapsed = now - start
               const progress = Math.min(elapsed / duration, 1)
               // ease-out cubic
@@ -50,13 +50,13 @@ export default function CountUp({
               setValue(end * eased)
 
               if (progress < 1) {
-                requestAnimationFrame(tick)
+                frame = requestAnimationFrame(tick)
               } else {
                 setValue(end)
               }
             }
 
-            requestAnimationFrame(tick)
+            frame = requestAnimationFrame(tick)
             observer.unobserve(entry.target)
           }
         })
@@ -65,12 +65,16 @@ export default function CountUp({
     )
 
     observer.observe(node)
-    return () => observer.disconnect()
-  }, [end, duration, hasAnimated])
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [end, duration])
 
   const formatted = decimals > 0
     ? value.toFixed(decimals)
-    : Math.round(value).toLocaleString()
+    : Math.round(value).toLocaleString('en-US')
 
   return (
     <span ref={ref} className={className}>
