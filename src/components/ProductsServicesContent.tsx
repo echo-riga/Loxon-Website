@@ -1,9 +1,10 @@
 'use client'
 
 import { useCollection } from '@/lib/use-collection'
-import CollectionStatus from '@/components/CollectionStatus'
+import CollectionGate from '@/components/CollectionGate'
 import { getProductsServices } from '@/lib/api'
 import Image from 'next/image'
+import SmoothImage from '@/components/SmoothImage'
 import Reveal from '@/components/Reveal'
 import type { ProductService } from '@/types/loxon'
 
@@ -30,40 +31,41 @@ export default function ProductsServicesContent({ initialItems }: { initialItems
 
       <section className="py-24 md:py-32 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
-          <CollectionStatus {...content} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {items.map((item, idx) => (
-              <Reveal
-                key={item.id}
-                animation="fade-up"
-                delay={idx * 120}
-                className="bg-gray-50 overflow-hidden shadow-md hover:shadow-xl transition duration-500"
-              >
-                {item.image_url && (
-                  <Image src={item.image_url} alt={item.title} width={900} height={500} sizes="(min-width: 768px) 50vw, 100vw" className="h-64 w-full object-cover" />
-                )}
-                <div className="p-8">
-                  <h2 className="text-2xl font-bold mb-3 text-gray-900">{item.title}</h2>
-                  <p className="text-gray-600 leading-relaxed">{item.description}</p>
-                  {item.video_url && (
-                    <a
-                      href={item.video_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block mt-5 text-sky-600 font-semibold hover:text-sky-700 transition"
-                    >
-                      WATCH OVERVIEW
-                    </a>
+          <CollectionGate {...content}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {items.map((item, idx) => (
+                <Reveal
+                  key={item.id}
+                  animation="fade-up"
+                  delay={idx * 120}
+                  className="bg-gray-50 overflow-hidden shadow-md hover:shadow-xl transition duration-500"
+                >
+                  {item.image_url && (
+                    <SmoothImage src={item.image_url} alt={item.title} width={900} height={500} sizes="(min-width: 768px) 50vw, 100vw" className="h-64 w-full object-cover" />
                   )}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          {!content.loading && !content.error && items.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-gray-500 text-xl">No products or services listed yet.</p>
+                  <div className="p-8">
+                    <h2 className="text-2xl font-bold mb-3 text-gray-900">{item.title}</h2>
+                    <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                    {item.video_url && (
+                      <a
+                        href={item.video_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block mt-5 text-sky-600 font-semibold hover:text-sky-700 transition"
+                      >
+                        WATCH OVERVIEW
+                      </a>
+                    )}
+                  </div>
+                </Reveal>
+              ))}
             </div>
-          )}
+            {!content.loading && !content.error && items.length === 0 && (
+              <div className="text-center py-20">
+                <p className="text-gray-500 text-xl">No products or services listed yet.</p>
+              </div>
+            )}
+          </CollectionGate>
         </div>
       </section>
     </>

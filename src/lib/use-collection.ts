@@ -2,13 +2,18 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-// Show the exported HTML snapshot immediately and fetch live updates after hydration.
+// Keep the export for SEO; visual sections wait for the first live response.
 export function useCollection<T>(fetcher: (signal?: AbortSignal) => Promise<T[]>, initialData?: T[]) {
   const [data, setData] = useState<T[]>(initialData ?? [])
-  const [loading, setLoading] = useState(initialData === undefined)
+  const [loading, setLoading] = useState(true)
+  const [ready, setReady] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [attempt, setAttempt] = useState(0)
-  const retry = useCallback(() => setAttempt(value => value + 1), [])
+  const retry = useCallback(() => {
+    if (!ready) setLoading(true)
+    setError(null)
+    setAttempt(value => value + 1)
+  }, [ready])
 
   useEffect(() => {
     let active = true
@@ -24,6 +29,7 @@ export function useCollection<T>(fetcher: (signal?: AbortSignal) => Promise<T[]>
         const items = await fetcher(controller.signal)
         if (active) {
           setData(items)
+          setReady(true)
           setError(null)
         }
       } catch {
@@ -52,5 +58,5 @@ export function useCollection<T>(fetcher: (signal?: AbortSignal) => Promise<T[]>
     }
   }, [fetcher, attempt])
 
-  return { data, loading, error, retry }
+  return { data, loading, ready, error, retry }
 }

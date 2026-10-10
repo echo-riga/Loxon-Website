@@ -1,9 +1,9 @@
 'use client'
 
 import { useCollection } from '@/lib/use-collection';
-import CollectionStatus from '@/components/CollectionStatus';
+import CollectionGate from '@/components/CollectionGate';
 import Link from "next/link";
-import Image from "next/image";
+import SmoothImage from '@/components/SmoothImage';
 import { getProjects, getClients } from "@/lib/api";
 import FeaturedProjects from '@/components/FeaturedProjects';
 import HeroWithVideo from '@/components/HeroWithVideo';
@@ -70,7 +70,7 @@ export default function HomeContent({ initialProjects, initialClients }: { initi
               </Reveal>
               <Reveal animation="fade-left" delay={200} className="group relative overflow-hidden bg-white p-8 text-center border border-sky-100 shadow-sm hover:-translate-y-1 hover:shadow-xl transition duration-300">
                 <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-transparent" />
-                <div className="text-4xl font-bold text-sky-600 mb-2">{projectContent.loading || (projectContent.error && projects.length === 0) ? <span>?</span> : <CountUp key={projects.length} end={projects.length} suffix="+" />}</div>
+                <div className="text-4xl font-bold text-sky-600 mb-2">{!projectContent.ready ? <span>?</span> : <CountUp key={projects.length} end={projects.length} suffix="+" />}</div>
                 <div className="text-gray-700 font-semibold">Projects Completed</div>
                 <div className="text-sm text-gray-500 mt-1">Across the Philippines</div>
               </Reveal>
@@ -98,11 +98,12 @@ export default function HomeContent({ initialProjects, initialClients }: { initi
               <span className="ml-1 transition-transform group-hover:translate-x-1">&rarr;</span>
             </Link>
           </Reveal>
-          <CollectionStatus {...projectContent} />
-          <FeaturedProjects projects={featuredProjects} />
-          {!projectContent.loading && !projectContent.error && projects.length === 0 && (
-            <p className="py-10 text-center text-gray-500">No projects available at this time.</p>
-          )}
+          <CollectionGate {...projectContent}>
+            <FeaturedProjects projects={featuredProjects} />
+            {!projectContent.loading && !projectContent.error && projects.length === 0 && (
+              <p className="py-10 text-center text-gray-500">No projects available at this time.</p>
+            )}
+          </CollectionGate>
         </div>
       </section>
 
@@ -123,38 +124,39 @@ export default function HomeContent({ initialProjects, initialClients }: { initi
               </p>
             </Reveal>
             <Reveal animation="fade-up" delay={200}>
-              <CollectionStatus {...clientContent} />
-              <Marquee speed={30} direction="left" pauseOnHover>
-                {businessPartners.map((client) => (
-                  <div
-                    key={client.id}
-                    className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 mx-4 w-64 shrink-0"
-                  >
-                    <div className="h-32 w-full flex items-center justify-center mb-4">
-                      {client.image_url ? (
-                        <Image
-                          src={client.image_url}
-                          alt={client.title}
-                          width={240}
-                          height={96}
-                          sizes="(min-width: 1024px) 20vw, 50vw"
-                          className="max-h-24 w-auto max-w-full object-contain transition duration-300 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="h-24 w-full flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-sky-50 transition">
-                          <span className="text-gray-500 group-hover:text-sky-600 font-semibold text-center px-2">
-                            {client.title}
-                          </span>
-                        </div>
-                      )}
+              <CollectionGate {...clientContent} variant="logos">
+                <Marquee speed={30} direction="left" pauseOnHover>
+                  {businessPartners.map((client) => (
+                    <div
+                      key={client.id}
+                      className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 mx-4 w-64 shrink-0"
+                    >
+                      <div className="h-32 w-full flex items-center justify-center mb-4">
+                        {client.image_url ? (
+                          <SmoothImage
+                            src={client.image_url}
+                            alt={client.title}
+                            width={240}
+                            height={96}
+                            sizes="(min-width: 1024px) 20vw, 50vw"
+                            className="max-h-24 w-auto max-w-full object-contain transition duration-300 group-hover:scale-110"
+                          />
+                        ) : (
+                          <div className="h-24 w-full flex items-center justify-center bg-gray-100 rounded-lg group-hover:bg-sky-50 transition">
+                            <span className="text-gray-500 group-hover:text-sky-600 font-semibold text-center px-2">
+                              {client.title}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-center text-gray-600 text-sm font-medium group-hover:text-sky-600 transition">
+                        {client.title}
+                      </p>
+                      <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></div>
                     </div>
-                    <p className="text-center text-gray-600 text-sm font-medium group-hover:text-sky-600 transition">
-                      {client.title}
-                    </p>
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-500 group-hover:w-full transition-all duration-300"></div>
-                  </div>
-                ))}
-              </Marquee>
+                  ))}
+                </Marquee>
+              </CollectionGate>
             </Reveal>
           </div>
         </section>

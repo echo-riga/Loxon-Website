@@ -71,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="font-sans bg-white text-gray-900">
-        <noscript><style>{'.reveal-hidden { opacity: 1 !important; transform: none !important; filter: none !important; }'}</style></noscript>
+        <noscript><style>{'.collection-placeholder { display: none !important; } .collection-pending { position: static !important; visibility: visible !important; pointer-events: auto !important; } .smooth-image-pending { opacity: 1 !important; } .reveal-hidden { opacity: 1 !important; transform: none !important; filter: none !important; }'}</style></noscript>
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />

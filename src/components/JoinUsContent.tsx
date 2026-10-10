@@ -1,7 +1,7 @@
 'use client'
 
 import { useCollection } from '@/lib/use-collection'
-import CollectionStatus from '@/components/CollectionStatus'
+import CollectionGate from '@/components/CollectionGate'
 import { getJobs } from '@/lib/api'
 import Image from 'next/image'
 import JobListings from '@/components/JobListings'
@@ -31,18 +31,19 @@ export default function JoinUsContent({ initialJobs }: { initialJobs: Job[] }) {
 
       <section className="py-24 md:py-32 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
-          <CollectionStatus {...content} />
-          <div className="max-w-4xl mx-auto">
-            <JobListings jobs={jobs} />
-            {!content.loading && !content.error && jobs.length === 0 && (
-              <div className="text-center py-16 bg-gray-50 rounded-lg">
-                <p className="text-gray-500 text-xl">No open positions at this time. Check back soon!</p>
-              </div>
-            )}
-            <Reveal animation="fade-up" className="text-center mt-12 text-gray-600">
-              <p>Or send your resume to <a href="mailto:careers@loxon.ph" className="text-sky-600 hover:underline">careers@loxon.ph</a></p>
-            </Reveal>
-          </div>
+          <CollectionGate {...content} variant="rows">
+            <div className="max-w-4xl mx-auto">
+              <JobListings jobs={jobs} />
+              {!content.loading && !content.error && jobs.length === 0 && (
+                <div className="text-center py-16 bg-gray-50 rounded-lg">
+                  <p className="text-gray-500 text-xl">No open positions at this time. Check back soon!</p>
+                </div>
+              )}
+              <Reveal animation="fade-up" className="text-center mt-12 text-gray-600">
+                <p>Or send your resume to <a href="mailto:careers@loxon.ph" className="text-sky-600 hover:underline">careers@loxon.ph</a></p>
+              </Reveal>
+            </div>
+          </CollectionGate>
         </div>
       </section>
     </>

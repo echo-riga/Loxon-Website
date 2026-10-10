@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Reveal from './Reveal'
-import CollectionStatus from './CollectionStatus'
+import CollectionGate from './CollectionGate'
 import { getProjects, type ProjectWithImages } from '@/lib/api'
 import { useCollection } from '@/lib/use-collection'
 
@@ -148,70 +148,71 @@ export default function ProjectsGrid({ initialProjects }: { initialProjects: Pro
       {/* Projects Table */}
       <section className="py-24 md:py-32 bg-white w-full">
         <div className="w-full px-8 md:px-16 lg:px-32">
-          <CollectionStatus {...content} />
-          {projects.length > 0 ? (
-            <Reveal animation="fade-up">
-              <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="bg-sky-600 text-white">
-                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Project</th>
-                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Type</th>
-                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Location</th>
-                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Year</th>
-                      <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Client</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {projects.map((project, idx) => (
-                      <tr
-                        key={project.id}
-                        onClick={() => openModal(project)}
-                        className={`cursor-pointer transition duration-200 hover:bg-sky-50 ${
-                          idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'
-                        } border-t border-gray-100`}
-                      >
-                        {/* Project column: title (hyperlink-styled) + description subtitle */}
-                        <td className="px-6 py-5 align-top">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              openModal(project)
-                            }}
-                            className="text-left text-lg font-bold text-sky-600 hover:text-sky-700 hover:underline transition duration-200 focus:outline-none"
-                          >
-                            {project.title}
-                          </button>
-                          {project.description && (
-                            <p className="text-gray-600 text-sm leading-relaxed mt-1 line-clamp-2 max-w-xl">
-                              {project.description}
-                            </p>
-                          )}
-                        </td>
-                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
-                          {project.project_type || '—'}
-                        </td>
-                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
-                          {project.location || '—'}
-                        </td>
-                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
-                          {fmtYear(project.constructed_date)}
-                        </td>
-                        <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
-                          {project.client_name || '—'}
-                        </td>
+          <CollectionGate {...content} variant="rows">
+            {projects.length > 0 ? (
+              <Reveal animation="fade-up">
+                <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="bg-sky-600 text-white">
+                        <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Project</th>
+                        <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Type</th>
+                        <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Location</th>
+                        <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Year</th>
+                        <th className="px-6 py-4 font-semibold text-sm uppercase tracking-wider whitespace-nowrap">Client</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {projects.map((project, idx) => (
+                        <tr
+                          key={project.id}
+                          onClick={() => openModal(project)}
+                          className={`cursor-pointer transition duration-200 hover:bg-sky-50 ${
+                            idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'
+                          } border-t border-gray-100`}
+                        >
+                          {/* Project column: title (hyperlink-styled) + description subtitle */}
+                          <td className="px-6 py-5 align-top">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                openModal(project)
+                              }}
+                              className="text-left text-lg font-bold text-sky-600 hover:text-sky-700 hover:underline transition duration-200 focus:outline-none"
+                            >
+                              {project.title}
+                            </button>
+                            {project.description && (
+                              <p className="text-gray-600 text-sm leading-relaxed mt-1 line-clamp-2 max-w-xl">
+                                {project.description}
+                              </p>
+                            )}
+                          </td>
+                          <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                            {project.project_type || '—'}
+                          </td>
+                          <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                            {project.location || '—'}
+                          </td>
+                          <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                            {fmtYear(project.constructed_date)}
+                          </td>
+                          <td className="px-6 py-5 align-top text-gray-700 whitespace-nowrap">
+                            {project.client_name || '—'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Reveal>
+            ) : !content.loading && !content.error ? (
+              <div className="text-center py-20">
+                <p className="text-gray-500 text-xl">No projects available at this time.</p>
               </div>
-            </Reveal>
-          ) : !content.loading && !content.error ? (
-            <div className="text-center py-20">
-              <p className="text-gray-500 text-xl">No projects available at this time.</p>
-            </div>
-          ) : null}
+            ) : null}
+          </CollectionGate>
         </div>
       </section>
 
