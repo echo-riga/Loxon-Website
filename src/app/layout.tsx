@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -8,7 +8,13 @@ import BackToTop from '@/components/BackToTop'
 import Chatbot from '@/components/Chatbot'
 import { siteUrl, siteName } from '@/lib/seo'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const inter = localFont({
+  src: './fonts/inter-latin.woff2',
+  variable: '--font-inter',
+  display: 'swap',
+  weight: '100 900',
+  style: 'normal',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
