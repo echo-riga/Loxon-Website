@@ -1,0 +1,9 @@
+
+{
+  "rewrites": [
+    {
+      "source": "/google645d7acc68af21ff.html",
+      "destination": "/google645d7acc68af21ff/"
+    }
+  ]
+}
