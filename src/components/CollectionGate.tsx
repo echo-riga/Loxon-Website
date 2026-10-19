@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react'
 import CollectionStatus from './CollectionStatus'
+import { RevealReadyContext } from './RevealContext'
 
 export default function CollectionGate({ loading, ready, error, retry, children, variant = 'cards' }: {
   loading: boolean
@@ -32,7 +33,7 @@ export default function CollectionGate({ loading, ready, error, retry, children,
       )}
       <CollectionStatus loading={false} error={error} retry={retry} />
       <div className={ready ? 'collection-content collection-ready' : 'collection-content collection-pending'} aria-hidden={!ready}>
-        {children}
+        <RevealReadyContext.Provider value={ready}>{children}</RevealReadyContext.Provider>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Reveal from './Reveal';
 export default function HeroWithVideo() {
   return (
     <section className="relative h-screen min-h-[700px] w-full flex items-center bg-gray-900 overflow-hidden">
@@ -10,7 +11,7 @@ export default function HeroWithVideo() {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover object-center"
+        className="hero-parallax absolute inset-0 w-full h-full object-cover object-center"
       >
         <source
           src="https://res.cloudinary.com/dv70g6upv/video/upload/f_auto:video,q_auto/v1779411156/background-video_1_nhlpwp.mp4"
@@ -23,28 +24,28 @@ export default function HeroWithVideo() {
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/40 to-transparent" />
 
       {/* Content */}
-      <div className="relative z-10 w-full px-6 sm:px-8 md:px-16 lg:px-32 animate-fade-in-up">
+      <div className="relative z-10 w-full px-6 sm:px-8 md:px-16 lg:px-32">
         <div className="max-w-5xl mx-auto md:mx-0">
-          <span className="text-sky-200 text-base sm:text-lg md:text-xl font-semibold tracking-wider mb-3 sm:mb-4 block">
+          <Reveal as="span" delay={100} className="text-sky-200 text-base sm:text-lg md:text-xl font-semibold tracking-wider mb-3 sm:mb-4 block">
             ESTABLISHED 1983
-          </span>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 text-white leading-tight [text-shadow:0_2px_8px_rgba(0,0,0,0.5)]">
-            Engineering the<br />
-            <span className="text-sky-200">Philippines' Future</span>
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 mb-6 sm:mb-8 md:mb-10 max-w-3xl leading-relaxed">
+          </Reveal>
+          <Reveal as="h1" delay={220} duration={1200} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 text-white leading-tight [text-shadow:0_2px_8px_rgba(0,0,0,0.5)]">
+            WE PROTECT<br />
+            <span className="text-sky-200">LIFE AND PROPERTY!</span>
+          </Reveal>
+          <Reveal as="p" delay={380} className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 mb-6 sm:mb-8 md:mb-10 max-w-3xl leading-relaxed">
             Loxon Philippines Inc. delivers world-class engineering and
             construction solutions from infrastructure to industrial projects
             with unwavering quality and safety.
-          </p>
-          <div className="flex flex-wrap gap-4 sm:gap-6">
+          </Reveal>
+          <Reveal delay={520} className="flex flex-wrap gap-4 sm:gap-6">
             <Link href="/projects" className="bg-sky-600 hover:bg-sky-700 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
               VIEW OUR WORK
             </Link>
             <Link href="/contact?type=sales" className="border-2 border-white bg-slate-950/40 text-white hover:bg-white hover:text-gray-900 px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-semibold transition duration-300 inline-block">
               SALES INQUIRY
             </Link>
-          </div>
+          </Reveal>
         </div>
       </div>
 

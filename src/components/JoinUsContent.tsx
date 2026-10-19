@@ -16,16 +16,16 @@ export default function JoinUsContent({ initialJobs }: { initialJobs: Job[] }) {
     <>
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
-        <Image src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80" alt="Join our engineering team" fill priority sizes="100vw" className="object-cover" />
+        <Image src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80" alt="Join our engineering team" fill priority sizes="100vw" className="hero-parallax object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <div className="text-center px-6 max-w-4xl">
+          <Reveal className="text-center px-6 max-w-4xl" duration={900}>
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
               Join Our Team
             </h1>
             <p className="text-gray-200 text-xl md:text-2xl leading-relaxed">
               Build your career with Loxon Philippines. We are looking for passionate engineers and construction professionals.
             </p>
-          </div>
+          </Reveal>
         </div>
       </div>
 

@@ -10,11 +10,11 @@ export default function OurCompanyPage() {
     <>
       {/* Cover Image */}
       <div className="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
-        <Image src="https://loxon.com.ph/wp-content/uploads/2020/01/new.png" alt="Company cover" fill priority sizes="100vw" className="object-cover" />
+        <Image src="https://loxon.com.ph/wp-content/uploads/2020/01/new.png" alt="Company cover" fill priority sizes="100vw" className="hero-parallax object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+          <Reveal as="h1" className="px-6 text-center text-white text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight" duration={900}>
             Our Company
-          </h1>
+          </Reveal>
         </div>
       </div>
 

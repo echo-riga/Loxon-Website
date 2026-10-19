@@ -31,15 +31,15 @@ export default function ProjectsGrid({ initialProjects }: { initialProjects: Pro
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="hero-parallax object-cover"
         />
         <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-          <div className="max-w-4xl px-6 text-center">
+          <Reveal className="max-w-4xl px-6 text-center" duration={900}>
             <h1 className="mb-4 text-5xl font-bold text-white md:text-6xl lg:text-7xl">Our Projects</h1>
             <p className="text-xl leading-relaxed text-gray-200 md:text-2xl">
               A showcase of our finest engineering and construction achievements across the Philippines.
             </p>
-          </div>
+          </Reveal>
         </div>
       </div>
 
@@ -61,10 +61,13 @@ export default function ProjectsGrid({ initialProjects }: { initialProjects: Pro
                     </thead>
                     <tbody>
                       {projects.map((project, index) => (
-                        <tr
+                        <Reveal
+                          as="tr"
+                          animation="fade-right"
                           key={project.id}
                           onClick={() => setSelectedProjectId(project.id)}
-                          className={`cursor-pointer border-t border-gray-100 transition duration-200 hover:bg-sky-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'}`}
+                          delay={(index % 4) * 60}
+                          className={`cursor-pointer border-t border-gray-100 hover:bg-sky-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/60'}`}
                         >
                           <td className="px-6 py-5 align-top">
                             <button
@@ -85,7 +88,7 @@ export default function ProjectsGrid({ initialProjects }: { initialProjects: Pro
                           <td className="whitespace-nowrap px-6 py-5 align-top text-gray-700">{project.location || '—'}</td>
                           <td className="whitespace-nowrap px-6 py-5 align-top text-gray-700">{formatYear(project.constructed_date)}</td>
                           <td className="whitespace-nowrap px-6 py-5 align-top text-gray-700">{project.client_name || '—'}</td>
-                        </tr>
+                        </Reveal>
                       ))}
                     </tbody>
                   </table>

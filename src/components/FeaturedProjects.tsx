@@ -15,7 +15,7 @@ export default function FeaturedProjects({ projects }: { projects: ProjectWithIm
     <>
       <div className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, index) => (
-          <Reveal key={project.id} animation="fade-up" delay={index * 120} className="group cursor-pointer">
+          <Reveal key={project.id} animation="scale" delay={index * 180} className="group cursor-pointer">
             <button type="button" onClick={() => setSelectedProjectId(project.id)} className="w-full text-left">
               <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100 shadow-sm ring-1 ring-sky-100/70 transition duration-500 group-hover:-translate-y-1 group-hover:shadow-2xl group-hover:ring-sky-300/70">
                 {project.image_url && (

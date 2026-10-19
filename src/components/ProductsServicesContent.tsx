@@ -16,16 +16,16 @@ export default function ProductsServicesContent({ initialItems }: { initialItems
     <>
       {/* Hero with Cover Image */}
       <div className="relative h-[60vh] min-h-[450px] w-full overflow-hidden">
-        <Image src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600&q=80" alt="Engineering products and services" fill priority sizes="100vw" className="object-cover" />
+        <Image src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600&q=80" alt="Engineering products and services" fill priority sizes="100vw" className="hero-parallax object-cover" />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-          <div className="text-center px-6 max-w-4xl">
+          <Reveal className="text-center px-6 max-w-4xl" duration={900}>
             <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
               Products & Services
             </h1>
             <p className="text-gray-200 text-xl md:text-2xl leading-relaxed">
               Comprehensive engineering solutions tailored to your project needs.
             </p>
-          </div>
+          </Reveal>
         </div>
       </div>
 
@@ -36,8 +36,8 @@ export default function ProductsServicesContent({ initialItems }: { initialItems
               {items.map((item, idx) => (
                 <Reveal
                   key={item.id}
-                  animation="fade-up"
-                  delay={idx * 120}
+                  animation="scale"
+                  delay={(idx % 2) * 180}
                   className="bg-gray-50 overflow-hidden shadow-md hover:shadow-xl transition duration-500"
                 >
                   {item.image_url && (

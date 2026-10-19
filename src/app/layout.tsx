@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import BackToTop from '@/components/BackToTop'
 import Chatbot from '@/components/Chatbot'
+import ScrollEffects from '@/components/ScrollEffects'
 import { siteUrl, siteName } from '@/lib/seo'
 
 const inter = localFont({
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans bg-white text-gray-900">
         <noscript><style>{'.collection-placeholder { display: none !important; } .collection-pending { position: static !important; visibility: visible !important; pointer-events: auto !important; } .smooth-image-pending { opacity: 1 !important; } .reveal-hidden { opacity: 1 !important; transform: none !important; filter: none !important; }'}</style></noscript>
         <Navbar />
+        <ScrollEffects />
         <main className="min-h-screen">{children}</main>
         <Footer />
         <BackToTop />

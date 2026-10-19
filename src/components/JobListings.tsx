@@ -12,7 +12,6 @@ interface Job {
 
 export default function JobListings({ jobs }: { jobs: Job[] }) {
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [applicationJob, setApplicationJob] = useState<{ id: number; title: string } | null>(null)
   const displayedJob = jobs.find((job) => job.id === selectedJobId) ?? null
 
@@ -21,64 +20,42 @@ export default function JobListings({ jobs }: { jobs: Job[] }) {
       {jobs.length > 0 && (
         <div className="font-sans">
           <Reveal animation="fade-up" className="mb-8">
-            <span id="job-title-label" className="mb-3 block text-base font-semibold text-gray-700">
-              Select a job title
-            </span>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setIsDropdownOpen((open) => !open)}
-                className="flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-3 text-left font-sans text-base font-medium text-gray-900 outline-none transition hover:border-sky-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
-                aria-labelledby="job-title-label job-title-value"
-                aria-haspopup="listbox"
-                aria-expanded={isDropdownOpen}
-              >
-                <span id="job-title-value" className={displayedJob ? 'text-gray-900' : 'text-gray-500'}>
-                  {displayedJob?.title || 'Choose an open position'}
-                </span>
-                <svg
-                  className={`h-5 w-5 shrink-0 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m19 9-7 7-7-7" />
-                </svg>
-              </button>
-
-              {isDropdownOpen && (
-                <div
-                  className="mt-2 max-h-72 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white py-2 shadow-xl"
-                  role="listbox"
-                  aria-labelledby="job-title-label"
-                >
-                  {jobs.map((job) => (
-                    <button
+            <fieldset>
+              <legend className="mb-3 block text-base font-semibold text-gray-700">
+                Select an open position
+              </legend>
+              <p className="mb-5 text-gray-600">Choose a role below to view the details and apply.</p>
+              <div className="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                  {jobs.map((job, index) => (
+                    <Reveal
+                      as="label"
                       key={job.id}
-                      type="button"
-                      role="option"
-                      aria-selected={job.id === selectedJobId}
-                      onClick={() => {
-                        setSelectedJobId(job.id)
-                        setIsDropdownOpen(false)
-                      }}
-                      className={`block w-full px-4 py-3 text-left font-sans text-base transition hover:bg-sky-50 hover:text-sky-700 ${
+                      animation="fade-right"
+                      delay={(index % 5) * 100}
+                      className={`flex cursor-pointer items-center gap-4 px-5 py-4 text-left font-sans text-base transition-colors hover:bg-sky-50 hover:text-sky-700 focus-within:ring-2 focus-within:ring-inset focus-within:ring-sky-500 ${
                         job.id === selectedJobId ? 'bg-sky-50 font-semibold text-sky-700' : 'font-normal text-gray-700'
                       }`}
                     >
-                      {job.title}
-                    </button>
+                      <input
+                        type="radio"
+                        name="job-position"
+                        value={job.id}
+                        checked={job.id === selectedJobId}
+                        onChange={() => setSelectedJobId(job.id)}
+                        className="h-5 w-5 shrink-0 accent-sky-600"
+                      />
+                      <span>{job.title}</span>
+                    </Reveal>
                   ))}
-                </div>
-              )}
-            </div>
+              </div>
+            </fieldset>
           </Reveal>
 
           {displayedJob && (
             <Reveal
               key={displayedJob.id}
               animation="fade-up"
+              threshold={0}
               className="bg-gray-50 rounded-lg p-8 mb-8 hover:shadow-md transition duration-300"
             >
               <h2 className="text-2xl md:text-3xl font-bold mb-4 text-sky-700">{displayedJob.title}</h2>

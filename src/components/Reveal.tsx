@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'react'
+import { useContext, useEffect, useRef, useState, type CSSProperties, type ElementType, type MouseEventHandler, type ReactNode } from 'react'
+import { RevealReadyContext } from './RevealContext'
 
 type AnimationType = 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale' | 'blur'
 
@@ -13,28 +14,33 @@ interface RevealProps {
   once?: boolean
   className?: string
   as?: ElementType
+  onClick?: MouseEventHandler<HTMLElement>
 }
 
 export default function Reveal({
   children,
   animation = 'fade-up',
   delay = 0,
-  duration = 700,
+  duration = 1000,
   threshold = 0.15,
-  once = true,
+  once = false,
   className = '',
   as: Tag = 'div',
+  onClick,
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
+  const animating = useRef(false)
+  const shown = useRef(false)
+  const ready = useContext(RevealReadyContext)
 
   useEffect(() => {
     const node = ref.current
-    if (!node) return
+    if (!node || !ready) return
 
     // Respect reduced-motion: show immediately, no animation
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) {
+    if (prefersReduced || !('IntersectionObserver' in window)) {
       setVisible(true)
       return
     }
@@ -43,31 +49,45 @@ export default function Reveal({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            if (!shown.current) animating.current = true
+            shown.current = true
             setVisible(true)
             if (once) observer.unobserve(entry.target)
-          } else if (!once) {
+          } else if (!once && !animating.current) {
+            shown.current = false
             setVisible(false)
           }
         })
       },
-      { threshold, rootMargin: '0px 0px -10% 0px' }
+      // Tall content (such as the projects table) must still be able to reveal.
+      { threshold: [0, Math.min(threshold, 100 / Math.max(node.offsetHeight, 1))] }
     )
 
     observer.observe(node)
     return () => observer.disconnect()
-  }, [threshold, once])
+  }, [threshold, once, ready])
 
-  const hiddenClass = visible ? 'reveal-visible' : `reveal-hidden ${animation}`
+  const hiddenClass = visible ? 'reveal-visible' : 'reveal-hidden'
 
   return (
     <Tag
       ref={ref as any}
-      className={`${hiddenClass} ${className}`}
-      style={{
-        transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
-        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      onFocusCapture={() => setVisible(true)}
+      onAnimationEnd={(event: React.AnimationEvent<HTMLElement>) => {
+        if (event.target !== event.currentTarget) return
+        animating.current = false
+        const bounds = event.currentTarget.getBoundingClientRect()
+        if (!once && (bounds.bottom <= 0 || bounds.top >= window.innerHeight)) {
+          shown.current = false
+          setVisible(false)
+        }
       }}
+      onClick={onClick}
+      className={`reveal ${animation} ${hiddenClass} ${className}`}
+      style={{
+        '--reveal-duration': `${duration}ms`,
+        '--reveal-delay': `${delay}ms`,
+      } as CSSProperties}
     >
       {children}
     </Tag>
